@@ -64,9 +64,9 @@ onBeforeUnmount(() => {
 <template>
   <header class="site-header" :class="{ 'is-menu-open': menuOpen }">
     <div class="site-header__grid">
-      <!-- 直接用完整字标（图形 + MULTIPLY + 正片叠底），不再拿方标自己拼字。 -->
+      <!-- 方标。站名交给链接的 aria-label，图形本身不带文字。 -->
       <RouterLink to="/" class="site-header__brand" :aria-label="t(content.identity.name)">
-        <SiteMark variant="wordmark" class="site-header__wordmark" />
+        <SiteMark variant="mark" class="site-header__mark" />
       </RouterLink>
 
       <nav class="site-header__nav" :aria-label="t(content.ui.menu)">
@@ -137,7 +137,7 @@ onBeforeUnmount(() => {
 }
 
 /* —— 品牌 ——
-   完整字标按原始比例（331 × 126）缩放，高度对齐页头。 */
+   方标是正方形，尺寸就是边长。 */
 .site-header__brand {
   display: inline-flex;
   align-items: center;
@@ -146,13 +146,13 @@ onBeforeUnmount(() => {
 }
 
 /*
- * 字标按 331:126 的比例缩放，高度略低于页头，留下上下各 ~0.35rem 呼吸。
+ * 方标边长。略低于页头高度，留出上下呼吸。
  *
- * 高度下限不能太低：原始文件里「正片叠底」只占字标高度的 38%，
- * 字标高 24px 时中文实际只有 9px，糊成一团。当前值让中文落到 16px 左右。
+ * 选择器带上 .site-header__brand 是为了压过 SiteMark 内部的 `--mark`
+ * 尺寸规则（那条写的是 100%），否则图形会被拉满整个页头。
  */
-.site-header__wordmark {
-  height: clamp(1.9rem, 2.5vw, 2.6rem);
+.site-header__brand .site-header__mark {
+  height: clamp(1.75rem, 2.2vw, 2.1rem);
   width: auto;
   flex: none;
   display: block;

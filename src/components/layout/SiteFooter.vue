@@ -20,7 +20,7 @@ const scrollTop = () => {
     <div class="site-footer__inner">
       <div class="site-footer__top">
         <div class="site-footer__brand">
-          <SiteMark class="site-footer__mark" />
+          <SiteMark variant="wordmark" class="site-footer__wordmark" />
         </div>
 
         <nav class="site-footer__nav" :aria-label="t(content.ui.menu)">
@@ -59,12 +59,37 @@ const scrollTop = () => {
   padding: clamp(2.5rem, 5vw, 4.5rem) var(--page-x) clamp(1.5rem, 3vw, 2.25rem);
 }
 
+/*
+ * 页脚顶部两行：
+ *   第一行  完整字标（独占一行，宽度不受其它列挤压）
+ *   第二行  站点索引靠左、返回顶部靠右
+ *
+ * 换成完整字标之后，再按三列排会让导航列只剩几十像素，
+ * 日文的「プロジェクト」会被挤成两行。改成这个结构后，
+ * 宽度变化只影响换行，不影响列宽分配。
+ */
 .site-footer__top {
   display: grid;
-  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr) auto;
-  gap: var(--gutter);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'brand brand'
+    'nav   button';
+  gap: 1.75rem var(--gutter);
+  align-items: center;
   padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.site-footer__brand {
+  grid-area: brand;
+}
+
+.site-footer__nav {
+  grid-area: nav;
+}
+
+.site-footer__top-button {
+  grid-area: button;
+  justify-self: end;
 }
 
 .site-footer__brand {
@@ -73,20 +98,25 @@ const scrollTop = () => {
   align-items: flex-start;
 }
 
-.site-footer__mark {
-  width: 2.5rem;
+/*
+ * 完整字标（图形 + MULTIPLY + 正片叠底），按 331:126 的比例缩放。
+ * 高度取 2.5rem 而不是更小：原始文件里「正片叠底」只占字标高度的 38%，
+ * 压到 2rem 时中文只剩 12px 左右，会糊。
+ */
+.site-footer__brand .site-footer__wordmark {
   height: 2.5rem;
+  width: auto;
   flex: none;
   display: block;
 }
 
 /* 品牌声明用正文字号，不再是页脚里最小的一行。 */
 
-.site-footer__nav,
-.site-footer__socials {
+.site-footer__nav {
   display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.75rem;
 }
 
 .footer-link {
@@ -142,36 +172,19 @@ const scrollTop = () => {
   color: var(--tint-50);
 }
 
-@media (max-width: 1100px) {
+/* 窄到放不下时，按钮单独提一行，导航占满整行。 */
+@media (max-width: 420px) {
   .site-footer__top {
-    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'brand'
+      'nav'
+      'button';
+    justify-items: start;
   }
 
   .site-footer__top-button {
-    grid-column: 3;
-    justify-self: end;
-  }
-}
-
-@media (max-width: 760px) {
-  .site-footer__top {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem var(--gutter);
-  }
-
-  .site-footer__brand {
-    grid-column: 1 / -1;
-  }
-
-  .site-footer__top-button {
-    grid-column: 1 / -1;
     justify-self: start;
-  }
-
-  .site-footer__bottom {
-    flex-direction: column;
-    gap: 0.6rem;
-    align-items: flex-start;
   }
 }
 </style>
