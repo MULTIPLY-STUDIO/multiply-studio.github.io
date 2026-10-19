@@ -279,12 +279,14 @@ html.is-intro .site-main {
   transition: opacity 700ms var(--ease-out);
 }
 
-/* 窄屏没有第二阶段，渐显时长跟离场渐隐一致，交叉淡入淡出。 */
-@media (max-width: 600px) {
-  .cover__frame,
-  .site-header {
-    transition-duration: 520ms;
-  }
+/*
+ * 窄屏没有第二阶段，渐显时长跟离场渐隐一致，交叉淡入淡出。
+ * 用 JS 挂上的类名判断，而不是再写一条媒体查询 ——
+ * 窄屏的判定已经由 JS 量完真实版面，两边不该各有一套阈值。
+ */
+html.intro-narrow .cover__frame,
+html.intro-narrow .site-header {
+  transition-duration: 520ms;
 }
 
 html.is-intro:not(.is-revealed) .cover__frame,

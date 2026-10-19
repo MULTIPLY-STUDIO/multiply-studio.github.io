@@ -155,7 +155,47 @@ const isInline = () => props.mode === 'inline'
  * 竖屏下正方形受视口宽度限制，放大到版面右侧的构图不成立，
  * 所以只保留第一阶段飞入，落成后幕布自下而上收起。
  */
-const isNarrow = () => vw <= 600
+/**
+ * 方块最小边长。低于这个尺寸，标识的两个方块分不出「阶梯」，
+ * 只剩一坨黑，作为封面底图不成立。
+ */
+const MIN_DEVICE_W = 180
+
+/** 标识左边缘与封面文字之间至少留出的距离。 */
+const CONTENT_GAP = 24
+
+/**
+ * 是否走「窄屏」分支。
+ *
+ * 之前按视口宽度拍了个 600px 的阈值，但只要宽度过了线、长度又够，
+ * 手机竖屏其实完全放得下装置 —— 440×956 这类机器就被误判了。
+ * 这里改成量真实版面：先算终态方块尺寸，再看它的左边缘
+ * 会不会压到封面标题或口号。压到就不放装置，放得下就照常走两阶段。
+ *
+ * 结果在 measure() 里算一次并缓存：paint 每帧都要读，
+ * 每帧调 getBoundingClientRect 是没必要的强制同步布局。
+ */
+let narrowMode = false
+
+const computeNarrow = () => {
+  const logo = backgroundLogo()
+  if (logo < MIN_DEVICE_W) return true
+
+  // 终态：方块靠右，露出 61.8%，左边缘即 vw - logo * 0.618
+  const deviceLeft = vw - logo * EXPOSE_RATIO
+  const content = document.querySelector('.cover__content, .cover__frame')
+  if (!content) return false
+
+  const wideEdge = Math.max(
+    ...Array.from(content.querySelectorAll<HTMLElement>('.cover__title, .cover__slogan')).map(
+      (node) => node.getBoundingClientRect().right,
+    ),
+    content.getBoundingClientRect().left,
+  )
+  return deviceLeft < wideEdge + CONTENT_GAP
+}
+
+const isNarrow = () => narrowMode
 
 const reducedMotion = () =>
   typeof window !== 'undefined' &&
@@ -382,6 +422,12 @@ const measure = () => {
   vw = window.innerWidth
   vh = window.innerHeight
   publishGeometry()
+  narrowMode = computeNarrow()
+  /*
+   * 把判定结果交给 CSS：窄屏的渐显时长与宽屏不同，
+   * 用类名而不是媒体查询，避免 JS 与 CSS 各有一套阈值。
+   */
+  document.documentElement.classList.toggle('intro-narrow', narrowMode)
 }
 
 /** 当前页面滚动量。滚动容器是 body，两种取法都兜一下。 */
