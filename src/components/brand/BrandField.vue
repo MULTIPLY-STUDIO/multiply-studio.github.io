@@ -52,10 +52,10 @@ const props = withDefaults(
 const ENTER_MS = 700
 const MOVE_MS = 700
 /**
- * 窄屏的收起时长。沿用最初那版开屏离场的数值：340ms。
- * 曲线也是同一条 cubic-bezier(0.76, 0, 0.24, 1)，写在 CSS 里。
+ * 窄屏的离场时长：整层渐隐，比原来 340ms 的幕布收起稍长一点。
+ * 曲线与宽屏一致（easeOutExpo），写在 CSS 里。
  */
-const WIPE_MS = 340
+const NARROW_FADE_MS = 520
 /** 窄屏：飞入落成后先停这么久，再收起幕布 */
 const NARROW_HOLD_MS = 280
 
@@ -335,22 +335,20 @@ const paint = (elapsed: number) => {
     elScreen.value.style.opacity = '1'
 
     /*
-     * 窄屏：飞入落成 -> 停一下 -> 幕布自下而上收起。
+     * 窄屏：飞入落成 -> 停一下 -> 整层渐隐。
      *
-     * 收起是 CSS 动画（340ms / cubic-bezier(0.76, 0, 0.24, 1)），
-     * JS 只负责在停顿结束后挂上 is-wiping。不在 JS 里逐帧算进度，
-     * 否则等于换了第二条曲线。
-     *
-     * 整层套 clip-path，收起的边扫过 logo 时把 logo 一起带走。
+     * 渐隐是 CSS 动画，JS 只负责在停顿结束后挂上 is-fading-out，
+     * 逐帧算进度等于换了第二条曲线。白幕与方块同处这一层，
+     * 一个 opacity 同时作用在两者上，所以是「白底和 logo 一起淡掉」。
      */
-    const wipeStart = ENTER_MS + NARROW_HOLD_MS
-    const started = elapsed >= wipeStart
-    elRoot.value.classList.toggle('is-wiping', started)
-    elRoot.value.classList.toggle('is-covering', !started || elapsed < wipeStart + WIPE_MS)
+    const fadeStart = ENTER_MS + NARROW_HOLD_MS
+    const fading = elapsed >= fadeStart
+    elRoot.value.classList.toggle('is-fading-out', fading)
+    elRoot.value.classList.toggle('is-covering', !fading || elapsed < fadeStart + NARROW_FADE_MS)
     return
   }
 
-  elRoot.value.classList.remove('is-wiping')
+  elRoot.value.classList.remove('is-fading-out')
 
   const phase2 = clamp01((elapsed - ENTER_MS) / MOVE_MS)
   // 前 35% 仍不透明，之后 65% 内淡到 0
@@ -405,7 +403,7 @@ const settleDirectly = () => {
  * 宽屏：飞入 + 放大互换
  */
 const totalDuration = () =>
-  isNarrow() ? ENTER_MS + NARROW_HOLD_MS + WIPE_MS : ENTER_MS + MOVE_MS
+  isNarrow() ? ENTER_MS + NARROW_HOLD_MS + NARROW_FADE_MS : ENTER_MS + MOVE_MS
 
 /**
  * 正文与页头开始渐显的时刻。
@@ -476,6 +474,7 @@ onMounted(() => {
   }
 
   // 首帧之前就脱离容器、盖上整个视口，避免第一帧闪出正文
+  elRoot.value?.style.setProperty('--bf-narrow-fade', `${NARROW_FADE_MS}ms`)
   elRoot.value?.classList.add('is-covering', 'is-fixed')
   document.documentElement.classList.add('is-intro')
   document.documentElement.classList.remove('is-revealed')
@@ -565,20 +564,21 @@ onBeforeUnmount(() => {
 }
 
 /*
- * 窄屏离场：整层自下而上收起。
- * 收起的边扫过 logo 时把 logo 一起带走 —— 不是淡出，是被擦掉。
- * 时长与曲线沿用最初那版开屏离场：340ms / cubic-bezier(0.76, 0, 0.24, 1)。
+ * 窄屏离场：整层一起渐隐。
+ * 白幕、白色基底和两块方块同时在同一个元素上淡出，
+ * 所以 logo 与白底是同一个透明度，不会出现谁先没的情况。
+ * 时长与曲线和宽屏揭幕同族（easeOutExpo），只比它稍长一点。
  */
-.brand-field.is-wiping {
-  animation: bf-wipe 340ms cubic-bezier(0.76, 0, 0.24, 1) both;
+.brand-field.is-fading-out {
+  animation: bf-fade-out var(--bf-narrow-fade, 520ms) var(--ease-out) both;
 }
 
-@keyframes bf-wipe {
+@keyframes bf-fade-out {
   from {
-    clip-path: inset(0 0 0 0);
+    opacity: 1;
   }
   to {
-    clip-path: inset(0 0 100% 0);
+    opacity: 0;
   }
 }
 

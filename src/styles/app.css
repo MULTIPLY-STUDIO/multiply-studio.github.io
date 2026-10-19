@@ -279,10 +279,11 @@ html.is-intro .site-main {
   transition: opacity 700ms var(--ease-out);
 }
 
+/* 窄屏没有第二阶段，渐显时长跟离场渐隐一致，交叉淡入淡出。 */
 @media (max-width: 600px) {
   .cover__frame,
   .site-header {
-    transition-duration: 340ms;
+    transition-duration: 520ms;
   }
 }
 
