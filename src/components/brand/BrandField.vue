@@ -191,6 +191,9 @@ let narrowMode = false
 /** 入场是否已经结束（落定或直接落定）。结束后装置不再随视口变化重画。 */
 let introFinished = false
 
+/** 入场是否已经开始。没开始时不能画终态，否则第一帧会闪一下最终画面。 */
+let introStarted = false
+
 /** visualViewport 的 resize 监听，用于缩放结束后补一次重算。 */
 let visualViewportListener: (() => void) | null = null
 
@@ -569,6 +572,7 @@ const effectiveScroll = () => Math.max(scrollOffset(), rememberedScroll())
  * 用于：已经播过、页面已在滚动位置、用户要求减少动效。
  */
 const settleDirectly = () => {
+  introStarted = true
   paint(totalDuration())
   elRoot.value?.classList.remove('is-covering', 'is-fixed')
   introFinished = true
@@ -628,6 +632,16 @@ const tick = (now: number) => {
 const onResize = () => {
   // 双指缩放期间不改版面：可视视口变了，但布局视口没变。
   if (isPinchZoomed()) return
+
+  /*
+   * 入场还没开始就不要画。
+   *
+   * decide 要等一帧，而移动端在这个窗口里就会先来一次 resize
+   * （地址栏收放会触发 visualViewport 的 resize）。那时一画就是
+   * 终态几何，于是第一帧闪出最终画面，紧接着动画再从起点跑 ——
+   * 看上去就是「第一帧是终态」。
+   */
+  if (!introStarted && !introFinished) return
 
   const previousVw = vw
   measure()
@@ -697,6 +711,7 @@ onMounted(() => {
       return
     }
 
+    introStarted = true
     frame = requestAnimationFrame(tick)
     window.addEventListener('resize', onResize, { passive: true })
     watchEarlyScroll()
