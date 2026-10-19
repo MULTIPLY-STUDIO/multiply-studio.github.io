@@ -70,6 +70,12 @@ const isCjk = computed(() => isCjkLocale(locale.value))
 /* 名称与口号作为一个整体靠左，口号紧贴名称下方。 */
 .cover__identity {
   display: grid;
+  /*
+   * 收缩到内容宽度。
+   * 作为 grid 子项默认会拉满整栏，量出来的右边缘就是整栏右边缘，
+   * 装置避让与窄屏判定都会因此误判成「和文字重叠」。
+   */
+  justify-self: start;
   justify-items: start;
   gap: clamp(0.75rem, 1.6vw, 1.25rem);
 }

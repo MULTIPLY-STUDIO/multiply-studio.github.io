@@ -177,22 +177,27 @@ const CONTENT_GAP = 16
  */
 let narrowMode = false
 
+/** 终态方块边长。measure 里算一次，paint 每帧直接用，避免逐帧查 DOM。 */
+let targetLogo = 0
+
 const computeNarrow = () => {
   const logo = backgroundLogo()
   if (logo < MIN_DEVICE_W) return true
 
-  // 终态：方块靠右，露出 61.8%，左边缘即 vw - logo * 0.618
-  const deviceLeft = vw - logo * EXPOSE_RATIO
-  const content = document.querySelector('.cover__content, .cover__frame')
-  if (!content) return false
+  const block = document.querySelector('.cover__identity')
+  if (!block) return false
 
-  const wideEdge = Math.max(
-    ...Array.from(content.querySelectorAll<HTMLElement>('.cover__title, .cover__slogan')).map(
-      (node) => node.getBoundingClientRect().right,
-    ),
-    content.getBoundingClientRect().left,
-  )
-  return deviceLeft < wideEdge + CONTENT_GAP
+  /*
+   * 看两块矩形是否真的相交，而不是只比水平方向。
+   * 竖屏时标题块在左下、装置在上方，水平投影本来就重叠，
+   * 只比 x 轴会把这种正常排布误判成冲突。
+   */
+  const rect = block.getBoundingClientRect()
+  const layout = sideLayout(logo)
+  const overlapsX = layout.ox < rect.right + CONTENT_GAP
+  const overlapsY =
+    layout.oy < rect.bottom + CONTENT_GAP && layout.oy + logo > rect.top - CONTENT_GAP
+  return overlapsX && overlapsY
 }
 
 const isNarrow = () => narrowMode
@@ -211,16 +216,48 @@ const settledLogo = () => Math.min(Math.min(vw, vh) * 0.44, 17 * 16)
 const HEADER_H = () => Math.min(Math.max(vw * 0.052, 56), 72)
 
 /**
- * 终态尺寸：优先撑满「页头下沿到屏幕底部」，同时最宽不超过视口宽度的 62%。
- *
- * 装置现在只出现在首页第一屏与 404 页，正文不再需要为它留出列宽，
- * 所以原来那条「至少留 560px 给正文」的上限已经没有必要 ——
- * 它在窄视口下还会算出负数。改成按视口的固定比例封顶，
- * 既保证正方形放得进画面，也保证右移之后仍有足够面积露出。
+ * 横屏：方块最多占视口宽度的这个比例。横屏时方块通常撑满
+ * 「页头下沿到屏幕底」，宽度只是兜底上限。
  */
 const MAX_WIDTH_RATIO = 0.62
 
-const backgroundLogo = () => Math.min(vh - HEADER_H(), vw * MAX_WIDTH_RATIO)
+/**
+ * 竖屏：方块最多占视口宽度的这个比例。
+ *
+ * 竖屏时标题块被压到左下角，装置独占上方，两者的水平投影重叠也没关系，
+ * 所以不必再按「给文字留列宽」收窄 —— 只要上下不撞，方块可以做到接近整宽。
+ */
+const PORTRAIT_WIDTH_RATIO = 0.92
+
+/** 竖屏：方块下沿与封面文字块上沿之间至少留出的距离。 */
+const GAP_DEVICE_TEXT = 32
+
+/**
+ * 终态尺寸。
+ *
+ * 横屏：撑满页头下沿到屏幕底，宽度兜底。
+ *
+ * 竖屏：上方是一块独立区域，尺寸由「下沿不能压到标题块」反推 ——
+ *   方块顶边 = 页头 + (竖带 − 方块) × 0.382
+ *   要求 顶边 + 方块 ≤ 标题块顶边 − GAP
+ * 解出上限后再与竖带高度、视口宽度取小。
+ * 标题块越高，方块就越小；两者不会压在一起。
+ */
+const backgroundLogo = () => {
+  const band = vh - HEADER_H()
+  const block = document.querySelector('.cover__identity')
+
+  // 横屏，或不是封面（404 等没有标题块的容器）：按老规则走。
+  if (!isPortrait() || !block) {
+    return Math.min(band, vw * MAX_WIDTH_RATIO)
+  }
+
+  const ratio = PORTRAIT_TOP_RATIO
+  const textTop = block.getBoundingClientRect().top
+  const maxByText = (textTop - GAP_DEVICE_TEXT - HEADER_H() - band * ratio) / (1 - ratio)
+
+  return Math.max(0, Math.min(band, vw * PORTRAIT_WIDTH_RATIO, maxByText))
+}
 
 interface Layout {
   logo: number
@@ -324,7 +361,7 @@ const paint = (elapsed: number) => {
    * 也不能用线性插值代替缓动 —— 那样第二阶段会匀速，与第一阶段不一致。
    */
   const startLayout = centeredLayout(startLogo)
-  const endLayout = sideLayout(backgroundLogo())
+  const endLayout = sideLayout(targetLogo)
 
   const vmax = Math.max(vw, vh)
   const off = 120 * (vmax / 100)
@@ -427,6 +464,7 @@ const publishGeometry = () => {
 const measure = () => {
   vw = window.innerWidth
   vh = window.innerHeight
+  targetLogo = backgroundLogo()
   publishGeometry()
   narrowMode = computeNarrow()
   /*
