@@ -490,6 +490,25 @@ const scrollOffset = () =>
   window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0
 
 /**
+ * 这一条历史记录「记得」的滚动位置。
+ *
+ * 返回首页时，浏览器不是瞬间把页面放到记忆位置，而是从顶部过渡过去
+ * （html 上有 scroll-behavior: smooth）。所以判定时读实时位置永远读到 0，
+ * 会误判成「在顶部」，播起动画之后页面才滚走 —— 表现为闪一下又消失。
+ *
+ * 位置本身记在 history.state 里（滚动容器是 window，路由进出时写入），
+ * 这里直接读它，不看动画进行到哪一帧。
+ */
+const rememberedScroll = () => {
+  const state = window.history.state as { scroll?: { top?: number } } | null
+  const top = state?.scroll?.top
+  return typeof top === 'number' ? top : 0
+}
+
+/** 判定用的滚动量：记忆位置与实时位置取大。 */
+const effectiveScroll = () => Math.max(scrollOffset(), rememberedScroll())
+
+/**
  * 直接落到终态，不播入场。
  * 用于：已经播过、页面已在滚动位置、用户要求减少动效。
  */
@@ -563,10 +582,12 @@ onMounted(() => {
   /*
    * 等一帧再决定播不播。
    *
-   * 浏览器恢复滚动位置发生在上一次导航的记录上、首帧前后才落到 DOM：
-   * 刷新一个已经滚过的首页时，onMounted 里读到的 scrollY 还是 0，
-   * 于是动画照播，播到一半页面才跳到原来的位置 —— 看起来就是
-   * 「明明滚过了还在播」。推到下一帧再读，位置基本已经落定；
+   * 浏览器恢复滚动位置不在首帧，而且带过渡动画：从顶部平滑滚到记忆位置。
+   * 所以既不能只读 onMounted 时的实时位置（那时还是 0），
+   * 也不能只读下一帧的实时位置（过渡刚起步，仍是 0 附近）。
+   *
+   * 判定改用 history.state 里记录的记忆位置，与实时位置取大。
+   * 这样「返回一个滚过的首页」在动画开始前就能判出来，不会先播一下再消失。
    * 这段等待由白幕盖着整个视口，用户看不到区别。
    *
    * 判定只看「首屏在不在视野里」：
@@ -576,7 +597,7 @@ onMounted(() => {
    *   ④ 页面已经处在滚动位置 —— 首屏不在视野内，动画没有可承接的对象
    */
   const decide = () => {
-    const restoredScroll = scrollOffset()
+    const restoredScroll = effectiveScroll()
     const playIntro =
       !introHandledInDocument && !reducedMotion() && !introSettled() && restoredScroll <= 8
 
@@ -624,7 +645,7 @@ const watchEarlyScroll = () => {
   stopEarlyScrollGuard()
 
   const guard = () => {
-    if (scrollOffset() <= 8) return
+    if (effectiveScroll() <= 8) return
     stopEarlyScrollGuard()
     if (frame) cancelAnimationFrame(frame)
     frame = 0
