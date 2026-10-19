@@ -203,11 +203,14 @@ const computeNarrow = () => {
    * 竖屏时标题块在左下、装置在上方，水平投影本来就重叠，
    * 只比 x 轴会把这种正常排布误判成冲突。
    */
+  const scroll = window.scrollY
   const rect = block.getBoundingClientRect()
+  const contentTop = rect.top + scroll
+  const contentBottom = rect.bottom + scroll
   const layout = sideLayout(logo)
   const overlapsX = layout.ox < rect.right + CONTENT_GAP
   const overlapsY =
-    layout.oy < rect.bottom + CONTENT_GAP && layout.oy + logo > rect.top - CONTENT_GAP
+    layout.oy < contentBottom + CONTENT_GAP && layout.oy + logo > contentTop - CONTENT_GAP
   return overlapsX && overlapsY
 }
 
@@ -264,7 +267,12 @@ const backgroundLogo = () => {
   }
 
   const ratio = PORTRAIT_TOP_RATIO
-  const textTop = block.getBoundingClientRect().top
+  /*
+   * 一律换算成文档坐标。
+   * getBoundingClientRect() 是视口坐标，页面滚过之后同一个元素会读到负数，
+   * 拿它算尺寸就会随滚动位置漂移 —— 表现为翻下去再翻回来，标识大小变了。
+   */
+  const textTop = block.getBoundingClientRect().top + window.scrollY
   const maxByText = (textTop - GAP_DEVICE_TEXT - HEADER_H() - band * ratio) / (1 - ratio)
 
   return Math.max(0, Math.min(band, vw * PORTRAIT_WIDTH_RATIO, maxByText))
@@ -472,9 +480,34 @@ const publishGeometry = () => {
   root.style.setProperty('--brand-inset', '0px')
 }
 
+let measuredVw = -1
+let measuredVh = -1
+
 const measure = () => {
-  vw = window.innerWidth
-  vh = window.innerHeight
+  const nextVw = window.innerWidth
+  const nextVh = window.innerHeight
+  const widthChanged = nextVw !== measuredVw
+  const heightChanged = nextVh !== measuredVh
+
+  /*
+   * 尺寸只在「宽度」变化时重算。
+   *
+   * 移动端滚动时地址栏收放会改 innerHeight 并触发 resize，
+   * 一滚动就重算一次，标识会在两个大小之间来回跳 —— 这就是
+   * 「翻下去再翻上来，大小变一次」的来源。竖屏下尺寸本来就由
+   * 宽度与文字位置决定，高度只影响落点，不影响边长，所以高度变化
+   * 只更新 vh，不动尺寸。
+   */
+  if (!widthChanged && targetLogo > 0) {
+    if (heightChanged) vh = nextVh
+    measuredVh = nextVh
+    return
+  }
+
+  measuredVw = nextVw
+  measuredVh = nextVh
+  vw = nextVw
+  vh = nextVh
   targetLogo = backgroundLogo()
   publishGeometry()
   narrowMode = computeNarrow()
