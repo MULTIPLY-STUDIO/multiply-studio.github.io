@@ -1,0 +1,58 @@
+name: 构建并发布到 GitHub Pages
+
+# 推送到 main 就重新构建一次并发布 dist/。
+# 源码与构建产物分开：仓库里只放源码，dist/ 由 workflow 产出后直接上传为 Pages 制品。
+on:
+  push:
+    branches: [main]
+  # 允许在 Actions 页面手动重跑（内容没变但需要重新发布时用）。
+  workflow_dispatch:
+
+# Pages 发布需要的权限：读仓库、写 Pages、签发 OIDC。
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只跑一个发布；新的推送取消进行中的旧任务。
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 版本取自 package.json 的 packageManager 字段，不在两处各写一遍。
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # 锁文件必须与 package.json 一致，否则直接失败，避免装出计划外的依赖。
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      # build 里已经包含 vue-tsc 类型检查，类型不过就不会发布。
+      - name: 构建
+        run: pnpm build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

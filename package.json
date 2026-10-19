@@ -1,0 +1,26 @@
+{
+  "name": "multiply-studio-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MULTIPLY 正片叠底 studio website — geometric / Swiss International Style, black-white-gray.",
+  "scripts": {
+    "dev": "vite",
+    "typecheck": "vue-tsc -b --pretty false",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "fonts": "python scripts/build-webfont.py"
+  },
+  "dependencies": {
+    "vue": "^3.5.18",
+    "vue-router": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.7",
+    "vue-tsc": "^3.0.4"
+  },
+  "packageManager": "pnpm@11.9.0"
+}

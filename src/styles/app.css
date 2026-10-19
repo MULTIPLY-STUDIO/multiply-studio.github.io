@@ -1,0 +1,300 @@
+/* ==========================================================================
+   MULTIPLY 正片叠底 — 版式层
+   页面级的组合规则。组件私有样式留在各自的 <style scoped> 里。
+   ========================================================================== */
+
+.site-main {
+  display: block;
+}
+
+/* —— 页面通用容器 —— */
+.page {
+  padding-bottom: clamp(3rem, 7vw, 7rem);
+}
+
+.page__section {
+  padding-block: clamp(3rem, 6vw, 6rem);
+}
+
+/* 页头大标题区：左侧标题，右侧元信息。分隔靠留白，不加通栏线。 */
+.page-hero {
+  padding: clamp(2.5rem, 6vw, 5.5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.page-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--gutter);
+}
+
+.page-hero__title {
+  font-size: clamp(3.5rem, 13vw, 13rem);
+  letter-spacing: -0.045em;
+  line-height: 0.8;
+}
+
+.page-hero__title--han {
+  font-family: var(--font-han);
+  font-weight: 600;
+  font-size: clamp(3rem, 9.5vw, 8.5rem);
+  letter-spacing: 0.02em;
+  line-height: 1.06;
+  text-transform: none;
+  text-wrap: balance;
+}
+
+.page-hero__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: right;
+  color: var(--tint-50);
+  padding-bottom: 0.5rem;
+}
+
+/* —— 双栏内容：左侧标签列，右侧正文 —— */
+.split {
+  display: grid;
+  /* 左列给足固定宽度：里面是等宽标签，压窄后会挤成一个难以阅读的窄条。 */
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+
+.split__aside {
+  position: sticky;
+  top: calc(var(--header-h) + 2rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  /* 标签本身不换行，靠容器宽度容纳，而不是让文字竖着排。 */
+  min-width: 0;
+}
+
+.split__aside > * {
+  white-space: nowrap;
+}
+
+.split__body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2.4vw, 2rem);
+  min-width: 0;
+}
+
+/* —— 三栏：用于能力与流程 —— */
+.trio {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+.duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+/* —— 四栏：事实表 —— */
+.quad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+/* —— 大引言 —— */
+.pull-quote {
+  padding-block: clamp(1rem, 2vw, 2rem);
+}
+
+.pull-quote blockquote {
+  font-family: var(--font-han);
+  font-size: clamp(1.5rem, 3.2vw, 2.75rem);
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+  max-width: 30ch;
+}
+
+.pull-quote cite {
+  display: block;
+  margin-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tint-50);
+}
+
+/* —— 数据条：横向滚动的年份刻度 —— */
+.timeline {
+  display: flex;
+  align-items: stretch;
+  gap: 1px;
+  background: var(--ink);
+}
+
+.timeline__item {
+  flex: 1;
+  min-height: 4.5rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.timeline__year {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+}
+
+.timeline__count {
+  font-family: var(--font-sans);
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+/* —— 入场揭示 ——
+   默认可见。只有 `useReveal` 挂载后给 <html> 加上 .reveal-ready，
+   尚未揭示的元素才会隐藏。这样脚本失败、被禁用或减少动态效果时，
+   内容都不会停在不可见状态。位移只有 6px，不做大幅入场。 */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 560ms var(--ease-out),
+    transform 560ms var(--ease-out);
+}
+
+.reveal-ready [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* —— 响应式 —— */
+@media (max-width: 1080px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .split__aside {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .quad {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .trio {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .duo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .page-hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  .page-hero__meta {
+    text-align: left;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .quad {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .timeline {
+    overflow-x: auto;
+  }
+
+  .timeline__item {
+    min-width: 5.5rem;
+  }
+}
+
+/*
+ * 入场期间把正文抬到页头与页脚之上。
+ *
+ * 幕布是封面内部的固定层，而 .site-main 默认只有 z-index 1，
+ * 页头（z-index 60）会压在幕布上方，出现白幕盖不住页头的破绽。
+ * 这一段临时抬高，入场结束后自动撤销。
+ *
+ * 写在全局样式里而不是组件 scoped 样式：scoped 里的 :global(...)
+ * 会把后面的后代选择器一并吞掉，规则落到 html 上而不是 .site-main。
+ */
+html.is-intro .site-main {
+  z-index: 200;
+}
+
+/*
+ * 入场期间藏掉页头与封面正文，由 `is-revealed` 揭开。
+ *
+ * 白色幕布不透明，但文字在幕布之外还有自己的层：
+ * 首帧（类名生效之前那一次绘制）可能先把它们画出来，
+ * 看上去就是「先闪一帧白色遮罩后面的内容」。
+ *
+ * 揭开的方式是**渐显**，不裁切、不位移。
+ * `is-revealed` 在第二阶段开始的时刻加上（见 BrandField 的 revealAt），
+ * 所以淡入与放大互换完全重叠：起点相同、时长相同、曲线相同，
+ * 到入场结束时两者一起收束，不会出现「方块停了、字还在淡」。
+ *
+ * 时长与曲线取自第二阶段：宽屏 700ms（MOVE_MS），窄屏没有第二阶段，
+ * 改跟幕布收起一致 340ms（WIPE_MS）；两者都用同一条 --ease-out。
+ *
+ * 进入隐藏态时不加过渡：元素插入与类名生效之间只要发生过一次样式计算，
+ * 1 → 0 就会被当成一次过渡，入场开始时先淡出一次，像又闪了一下。
+ */
+.cover__frame,
+.site-header {
+  opacity: 1;
+  transition: opacity 700ms var(--ease-out);
+}
+
+@media (max-width: 600px) {
+  .cover__frame,
+  .site-header {
+    transition-duration: 340ms;
+  }
+}
+
+html.is-intro:not(.is-revealed) .cover__frame,
+html.is-intro:not(.is-revealed) .site-header {
+  opacity: 0;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover__frame,
+  .site-header {
+    transition: none;
+  }
+}

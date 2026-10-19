@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="MULTIPLY 正片叠底，独立数字工作室。做软件、界面与工程实现。"
+    />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" sizes="any" />
+    <!--
+      只预加载首屏真正用到的字体：页面标题是狸叶黑体，正文是思源黑体。
+      拉丁展示字与等宽字首屏占比很小，交给 @font-face 的 font-display: swap 即可，
+      额外 preload 反而会和首屏内容抢带宽。
+      文件名与 scripts/build-webfont.py 的产出必须保持一致。
+    -->
+    <link rel="preload" href="./src/assets/fonts/MultiplyBrush-Subset.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./src/assets/fonts/MultiplyHan-Subset.woff2" as="font" type="font/woff2" crossorigin />
+    <title>MULTIPLY 正片叠底</title>
+    <!--
+      启动白幕。
+
+      路由组件是异步加载的：页头页脚先渲染、首页区块后到，
+      中间会有一帧「只有页头页脚、内容空白」的壳子被画出来；
+      入场动画也要等组件挂载后才盖得住视口。
+
+      这块白幕从 HTML 解析起就盖住视口，挂载完成后由 main.ts 移除。
+      图标与字体继续在它下面加载，用户看不到任何中间态。
+      脚本没跑起来时（禁用 JS、脚本报错）3 秒后自动移除，内容仍可读。
+    -->
+    <style>
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: #ffffff;
+      }
+    </style>
+    <noscript>
+      <style>
+        #boot {
+          display: none;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <div id="boot"></div>
+    <div id="app"></div>
+    <script>
+      // 兜底：主脚本没跑起来时不要一直白着。
+      setTimeout(function () {
+        var boot = document.getElementById('boot')
+        if (boot) boot.remove()
+      }, 3000)
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
