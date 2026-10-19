@@ -36,11 +36,6 @@ export const siteContent: SiteContent = {
 
   home: {
     eyebrow: { zh: '独立数字工作室', en: 'Independent digital studio', ja: '独立デジタルスタジオ' },
-    discipline: {
-      zh: '软件、界面与交互',
-      en: 'Software, interface, interaction',
-      ja: 'ソフトウェア、インターフェース、インタラクション',
-    },
     /**
      * 封面标题的两行文字。逐语言给出，而不是在组件里按 locale 分支：
      * 组件只负责排版，不负责决定标题写什么。

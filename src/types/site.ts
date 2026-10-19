@@ -52,7 +52,6 @@ export interface SiteContent {
   }
   home: {
     eyebrow: LocalizedText
-    discipline: LocalizedText
     /** 封面标题的两行文字，逐语言给出，组件不按 locale 分支拼标题。 */
     titleLines: Record<Locale, string[]>
     /** 封面标题下方的口号。 */

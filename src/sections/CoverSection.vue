@@ -34,10 +34,6 @@ const isCjk = computed(() => isCjkLocale(locale.value))
           <p class="cover__slogan serif">{{ t(content.home.slogan) }}</p>
         </div>
       </div>
-
-      <div class="cover__base">
-        <p class="cover__discipline">{{ t(content.home.discipline) }}</p>
-      </div>
     </div>
   </section>
 </template>
@@ -56,8 +52,7 @@ const isCjk = computed(() => isCjkLocale(locale.value))
   z-index: 1;
   flex: 1;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: clamp(1rem, 2.5vw, 2rem);
+  grid-template-rows: minmax(0, 1fr);
   min-height: 0;
   /* 入场揭幕的初始态与过渡统一写在 src/styles/app.css，与页头共用一套。 */
 }
@@ -128,20 +123,7 @@ const isCjk = computed(() => isCjkLocale(locale.value))
   mix-blend-mode: multiply;
 }
 
-.cover__base {
-  display: flex;
-  align-items: end;
-}
 
-.cover__discipline {
-  font-family: var(--font-han);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  background: var(--paper);
-  justify-self: start;
-  padding-inline: 0.35rem;
-}
 
 @media (max-width: 600px) {
   .cover__title-line {

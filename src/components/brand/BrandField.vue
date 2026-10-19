@@ -162,7 +162,7 @@ const isInline = () => props.mode === 'inline'
 const MIN_DEVICE_W = 180
 
 /** 标识左边缘与封面文字之间至少留出的距离。 */
-const CONTENT_GAP = 24
+const CONTENT_GAP = 16
 
 /**
  * 是否走「窄屏」分支。
@@ -231,20 +231,26 @@ interface Layout {
 const centeredLayout = (logo: number): Layout => ({ logo, ox: (vw - logo) / 2, oy: (vh - logo) / 2 })
 
 /**
- * 终态布局：在「页头下沿到屏幕底部」这条竖带里居中，并向右移出屏幕。
- *
- * 桌面宽屏时标识撑满这条带，居中等于顶部贴页头、底部贴屏幕底；
- * 平板竖屏时标识被视口宽度卡住、比带矮，居中才不会吊在顶部。
- *
- * 露出比例取 0.618（黄金分割），也就是标识有 61.8% 在屏幕内、
- * 38.2% 移出右边界。
+ * 露出的比例：标识有这么多留在屏幕内，其余移出右边界。
+ * 越大越靠左、露得越多。0.68 是手动调出来的观感值。
  */
-const EXPOSE_RATIO = 0.618
+const EXPOSE_RATIO = 0.68
+
+/**
+ * 竖屏时标识的纵向落点：不是居中，而是放在这条竖带的黄金分割处 ——
+ * 从带顶往下取 0.382，整体偏上。横屏时标识通常撑满整条带，系数不起作用。
+ * 这个比例与横向的露出比例是两件事，不要互相推导。
+ */
+const PORTRAIT_TOP_RATIO = 0.382
+
+const isPortrait = () => vh > vw
 
 const sideLayout = (logo: number): Layout => ({
   logo,
   ox: vw - logo * EXPOSE_RATIO,
-  oy: HEADER_H() + (vh - HEADER_H() - logo) / 2,
+  oy:
+    HEADER_H() +
+    (vh - HEADER_H() - logo) * (isPortrait() ? PORTRAIT_TOP_RATIO : 0.5),
 })
 
 const slotBox = (layout: Layout, slot: { offset: number; ratio: number }): Box => ({
