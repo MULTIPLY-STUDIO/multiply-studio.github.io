@@ -112,6 +112,30 @@ const settleIntroFlag = () => {
   }
 }
 
+/**
+ * 直接落在首页时清掉「已看过」标记，让刷新首页也能看到开场。
+ *
+ * 标记要跨刷新保留，是为了「在子页面刷新再返回首页」不重播；
+ * 但如果这次文档本来就是从首页打开的（首次进入或原地刷新），
+ * 那条规则不适用 —— 用户看的就是首页，开场应该重来一遍。
+ *
+ * 只在模块求值时判断一次，也就是只认这个文档的起始地址：
+ * 之后在站内路由之间来回切换不会再清标记。
+ */
+const startedOnHome = (() => {
+  if (typeof window === 'undefined') return false
+  const hash = window.location.hash
+  return hash === '' || hash === '#' || hash === '#/'
+})()
+
+if (startedOnHome) {
+  try {
+    window.sessionStorage.removeItem(INTRO_FLAG)
+  } catch {
+    // 清不掉就算了，退化成不播。
+  }
+}
+
 const elA = ref<HTMLElement | null>(null)
 const elB = ref<HTMLElement | null>(null)
 const elPlate = ref<HTMLElement | null>(null)
