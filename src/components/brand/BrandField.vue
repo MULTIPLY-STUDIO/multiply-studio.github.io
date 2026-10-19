@@ -191,6 +191,9 @@ let narrowMode = false
 /** 入场是否已经结束（落定或直接落定）。结束后装置不再随视口变化重画。 */
 let introFinished = false
 
+/** visualViewport 的 resize 监听，用于缩放结束后补一次重算。 */
+let visualViewportListener: (() => void) | null = null
+
 /** 终态方块边长。measure 里算一次，paint 每帧直接用，避免逐帧查 DOM。 */
 let targetLogo = 0
 
@@ -486,7 +489,24 @@ const publishGeometry = () => {
 let measuredVw = -1
 let measuredVh = -1
 
+/**
+ * 用户是否正在双指缩放。
+ *
+ * 部分移动端浏览器在缩放时会把可视视口尺寸塞进 innerWidth/innerHeight，
+ * 于是每次捏合都触发一次 resize，我们按新的「宽度」重算几何 ——
+ * 标识跟着变小、位移，再缩一点就被判成窄屏直接淡出。
+ *
+ * visualViewport.scale 才是缩放手势的真实状态：只要大于 1 就说明
+ * 用户在看放大后的画面，这时任何视口变化都不该改动版面几何。
+ */
+const isPinchZoomed = () => {
+  const viewport = window.visualViewport
+  return viewport ? viewport.scale > 1.01 : false
+}
+
 const measure = () => {
+  if (isPinchZoomed()) return
+
   const nextVw = window.innerWidth
   const nextVh = window.innerHeight
   const widthChanged = nextVw !== measuredVw
@@ -606,6 +626,9 @@ const tick = (now: number) => {
  * 因此结束后只在**宽度**变化时重画，高度变化一概不碰。
  */
 const onResize = () => {
+  // 双指缩放期间不改版面：可视视口变了，但布局视口没变。
+  if (isPinchZoomed()) return
+
   const previousVw = vw
   measure()
   if (!introFinished || vw !== previousVw) paint(totalDuration())
@@ -615,6 +638,19 @@ onMounted(() => {
   measure()
 
   if (isInline()) return
+
+  /*
+   * 缩放期间我们主动忽略了视口变化，松手后要补一次。
+   * visualViewport 的 resize 在缩放结束时触发，此时 scale 回到 1，
+   * 交给正常的 resize 流程处理即可。
+   */
+  const viewport = window.visualViewport
+  const onVisualResize = () => {
+    if (isPinchZoomed()) return
+    onResize()
+  }
+  viewport?.addEventListener('resize', onVisualResize, { passive: true })
+  visualViewportListener = onVisualResize
 
   // static：不播动画，直接作为容器底图落定
   if (props.mode === 'static') {
@@ -711,6 +747,10 @@ const watchEarlyScroll = () => {
 onBeforeUnmount(() => {
   if (frame) cancelAnimationFrame(frame)
   window.removeEventListener('resize', onResize)
+  if (visualViewportListener) {
+    window.visualViewport?.removeEventListener('resize', visualViewportListener)
+    visualViewportListener = null
+  }
   stopEarlyScrollGuard()
   document.documentElement.classList.remove('is-intro', 'is-revealed')
 })
