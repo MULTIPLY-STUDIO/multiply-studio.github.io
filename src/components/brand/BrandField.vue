@@ -188,6 +188,9 @@ const CONTENT_GAP = 16
  */
 let narrowMode = false
 
+/** 入场是否已经结束（落定或直接落定）。结束后装置不再随视口变化重画。 */
+let introFinished = false
+
 /** 终态方块边长。measure 里算一次，paint 每帧直接用，避免逐帧查 DOM。 */
 let targetLogo = 0
 
@@ -548,6 +551,7 @@ const effectiveScroll = () => Math.max(scrollOffset(), rememberedScroll())
 const settleDirectly = () => {
   paint(totalDuration())
   elRoot.value?.classList.remove('is-covering', 'is-fixed')
+  introFinished = true
   window.addEventListener('resize', onResize, { passive: true })
 }
 
@@ -583,6 +587,7 @@ const tick = (now: number) => {
     return
   }
   frame = 0
+  introFinished = true
   startReveal()
   // 落定后交还给封面：脱离视口固定层，随封面一起滚走
   elRoot.value?.classList.remove('is-fixed')
@@ -590,9 +595,20 @@ const tick = (now: number) => {
   window.dispatchEvent(new Event('multiply:intro-done'))
 }
 
+/**
+ * 视口变化时只做必要的事。
+ *
+ * 入场阶段要跟着重画，免得动画跑到一半尺寸对不上。
+ * 入场结束之后装置只是封面里的一张静态底图，位置已经落定：
+ * 这时再按 vh 重画，手机上滚一下就动一下（地址栏收放会改 innerHeight），
+ * 双指缩放也会让可视视口变化，看上去就是「装置乱飞」。
+ *
+ * 因此结束后只在**宽度**变化时重画，高度变化一概不碰。
+ */
 const onResize = () => {
+  const previousVw = vw
   measure()
-  paint(totalDuration())
+  if (!introFinished || vw !== previousVw) paint(totalDuration())
 }
 
 onMounted(() => {
