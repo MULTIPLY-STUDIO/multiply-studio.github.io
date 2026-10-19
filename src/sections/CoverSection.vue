@@ -62,13 +62,17 @@ const isCjk = computed(() => isCjkLocale(locale.value))
   /* 入场揭幕的初始态与过渡统一写在 src/styles/app.css，与页头共用一套。 */
 }
 
+/*
+ * 首屏重心放在左下角：名称与口号贴着「软件、界面与交互」的上沿排，
+ * 上方留白交给装置。居中的话文字浮在半空，与底部那行说明各说各话。
+ */
 .cover__stage {
   display: grid;
-  align-items: center;
+  align-items: end;
   min-height: 0;
 }
 
-/* 名称与口号作为一个整体垂直居中，口号紧贴名称下方。 */
+/* 名称与口号作为一个整体靠左，口号紧贴名称下方。 */
 .cover__identity {
   display: grid;
   justify-items: start;
