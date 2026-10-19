@@ -4,7 +4,7 @@
  * 悬停时右侧图版以反白方式出现 —— 与「正片叠底」的机理一致：
  * 内容是叠在图层上的，不是弹出来的卡片。
  */
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { Project } from '@/types/content'
 import { useLocale } from '@/composables/useLocale'
 import MultiplyPlate from '@/components/brand/MultiplyPlate.vue'
@@ -21,6 +21,15 @@ const props = withDefaults(
 const { t } = useLocale()
 
 const disciplines = computed(() => props.project.disciplines.join(' / '))
+
+/*
+ * 悬停/聚焦时把图版「打开」。
+ *
+ * 打开的内容交给 MultiplyPlate 自己的入场动画（逐层收束 + 淡入，
+ * 与详情页的图版完全同一套参数），这里只负责把状态传下去：
+ * 移开的出场由容器淡出完成，不另造一条曲线。
+ */
+const revealPlate = ref(false)
 </script>
 
 <template>
@@ -28,6 +37,10 @@ const disciplines = computed(() => props.project.disciplines.join(' / '))
     :to="`/work/${project.slug}`"
     class="project-row"
     :class="'project-row--' + layout"
+    @pointerenter="revealPlate = true"
+    @pointerleave="revealPlate = false"
+    @focus="revealPlate = true"
+    @blur="revealPlate = false"
   >
     <span class="project-row__index mono">{{ project.index }}</span>
 
@@ -44,7 +57,11 @@ const disciplines = computed(() => props.project.disciplines.join(' / '))
     </span>
 
     <span class="project-row__plate" aria-hidden="true">
-      <MultiplyPlate :variant="project.plate" :density="project.density" />
+      <MultiplyPlate
+        :variant="project.plate"
+        :density="project.density"
+        :animate="revealPlate"
+      />
     </span>
 
     <span class="project-row__arrow" aria-hidden="true">
@@ -182,8 +199,8 @@ const disciplines = computed(() => props.project.disciplines.join(' / '))
   aspect-ratio: 1;
   pointer-events: none;
   opacity: 0;
-  clip-path: inset(0 0 0 100%);
-  transition: clip-path var(--base) var(--ease-out), opacity var(--fast) var(--ease-out);
+  /* 出场就是这一条淡出；入场时图版自己的逐层收束动画叠在上面。 */
+  transition: opacity var(--base) var(--ease-out);
 }
 
 .project-row__plate :deep(.multiply-plate) {
@@ -193,7 +210,6 @@ const disciplines = computed(() => props.project.disciplines.join(' / '))
 .project-row:hover .project-row__plate,
 .project-row:focus-visible .project-row__plate {
   opacity: 1;
-  clip-path: inset(0 0 0 0);
 }
 
 /* complete 布局给摘要更多空间，并把图版作为右侧常驻图示。 */
@@ -258,7 +274,6 @@ const disciplines = computed(() => props.project.disciplines.join(' / '))
     justify-self: auto;
     align-self: center;
     opacity: 1;
-    clip-path: none;
     pointer-events: none;
   }
 

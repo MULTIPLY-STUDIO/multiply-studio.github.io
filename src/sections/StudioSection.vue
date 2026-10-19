@@ -138,19 +138,41 @@ const { content, t } = useLocale()
 }
 
 @media (max-width: 700px) {
-  /* 单列布局：左右内边距都归零。 */
+  /*
+   * 单列情况下不再用「1px 间隙露出底色」来画线。
+   *
+   * 那套做法是给容器铺灰底、卡片铺白底、间隙透出灰线 —— 四列时看不出问题，
+   * 单列时容器本身就是一整块灰底，上下两端的行间隙会把整块卡片包起来，
+   * 看上去每张卡都有一圈边框。改成卡片之间一条上边框，容器不带底色，
+   * 外框自然消失。
+   */
+  .home-studio__caps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    background: none;
+  }
+
   .cap {
     padding-inline: 0;
+    padding-block: 1.25rem;
+    background: none;
+  }
+
+  .cap + .cap {
+    border-top: 1px solid var(--tint-20);
+  }
+
+  .cap:first-child {
+    padding-top: 0;
+  }
+
+  .cap:last-child {
+    padding-bottom: 0;
   }
 
   .home-studio__intro {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
   }
-
-  .home-studio__caps {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
 }
 </style>

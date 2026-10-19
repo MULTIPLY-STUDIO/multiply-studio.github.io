@@ -95,6 +95,17 @@ const SMALL = { offset: 0.3902, ratio: 0.6098 }
  */
 const INTRO_FLAG = 'multiply-intro-settled'
 
+/**
+ * 本次文档里是否已经处理过入场。
+ *
+ * 光靠 sessionStorage 不够：站内从首页跳到子页面再按返回时，
+ * 组件会重新挂载，而标记是「这次访问已经看过」这种粗粒度信息，
+ * 用它挡住重播虽然也能成立，但语义绕了一圈。
+ * 这里直接记「这个文档里已经处理过」，返回时不播；
+ * 跨刷新、跨进后退的语义交给 sessionStorage。
+ */
+let introHandledInDocument = false
+
 const introSettled = () => {
   try {
     return window.sessionStorage.getItem(INTRO_FLAG) === '1'
@@ -543,38 +554,94 @@ onMounted(() => {
     return
   }
 
-  /*
-   * 入场只在这一个判断里决定播不播，无论播没播，都记成「已处理」。
-   *
-   * 不播的三种情况：
-   *   ① 减少动效
-   *   ② 本会话已经进过封面 —— 包括离开首页后再按返回
-   *   ③ 进入时页面已经处在滚动位置 —— 此时首屏不在视野内，
-   *      幕布盖住的是被滚动过的内容，动画没有可以承接的对象
-   *
-   * 标记必须在判断之外置位：否则首次进入时若因滚动被跳过，
-   * 标记始终为空，之后每次返回都会被当成「首次」重放一遍。
-   */
-  const playIntro = !reducedMotion() && !introSettled() && scrollOffset() <= 8
-  settleIntroFlag()
-
-  if (!playIntro) {
-    settleDirectly()
-    return
-  }
-
   // 首帧之前就脱离容器、盖上整个视口，避免第一帧闪出正文
   elRoot.value?.style.setProperty('--bf-narrow-fade', `${NARROW_FADE_MS}ms`)
   elRoot.value?.classList.add('is-covering', 'is-fixed')
   document.documentElement.classList.add('is-intro')
   document.documentElement.classList.remove('is-revealed')
-  frame = requestAnimationFrame(tick)
-  window.addEventListener('resize', onResize, { passive: true })
+
+  /*
+   * 等一帧再决定播不播。
+   *
+   * 浏览器恢复滚动位置发生在上一次导航的记录上、首帧前后才落到 DOM：
+   * 刷新一个已经滚过的首页时，onMounted 里读到的 scrollY 还是 0，
+   * 于是动画照播，播到一半页面才跳到原来的位置 —— 看起来就是
+   * 「明明滚过了还在播」。推到下一帧再读，位置基本已经落定；
+   * 这段等待由白幕盖着整个视口，用户看不到区别。
+   *
+   * 判定只看「首屏在不在视野里」：
+   *   ① 减少动效
+   *   ② 本次文档里已经处理过（站内跳走再返回）
+   *   ③ 这个标签页本次访问已经看过（跨刷新、跨前进后退）
+   *   ④ 页面已经处在滚动位置 —— 首屏不在视野内，动画没有可承接的对象
+   */
+  const decide = () => {
+    const restoredScroll = scrollOffset()
+    const playIntro =
+      !introHandledInDocument && !reducedMotion() && !introSettled() && restoredScroll <= 8
+
+    introHandledInDocument = true
+    settleIntroFlag()
+
+    if (!playIntro) {
+      // 直接落定并揭开：不播动画，但内容要立刻可见。
+      settleDirectly()
+      document.documentElement.classList.add('is-revealed')
+      document.documentElement.classList.remove('is-intro')
+      return
+    }
+
+    frame = requestAnimationFrame(tick)
+    window.addEventListener('resize', onResize, { passive: true })
+    watchEarlyScroll()
+  }
+
+  requestAnimationFrame(decide)
 })
+
+/**
+ * 迟到的滚动恢复。
+ *
+ * 有的浏览器把滚动位置放到 load 之后才恢复，一帧的等待未必够。
+ * 真播起来了才发现首屏已经在视野外时，直接取消入场、落定并揭开，
+ * 而不是让幕布盖着一段已经滚过的页面继续放大互换。
+ */
+let earlyScrollGuard: (() => void) | null = null
+let earlyScrollTimer = 0
+
+const stopEarlyScrollGuard = () => {
+  if (earlyScrollGuard) {
+    window.removeEventListener('scroll', earlyScrollGuard)
+    earlyScrollGuard = null
+  }
+  if (earlyScrollTimer) {
+    window.clearTimeout(earlyScrollTimer)
+    earlyScrollTimer = 0
+  }
+}
+
+const watchEarlyScroll = () => {
+  stopEarlyScrollGuard()
+
+  const guard = () => {
+    if (scrollOffset() <= 8) return
+    stopEarlyScrollGuard()
+    if (frame) cancelAnimationFrame(frame)
+    frame = 0
+    settleDirectly()
+    document.documentElement.classList.add('is-revealed')
+    document.documentElement.classList.remove('is-intro')
+  }
+
+  earlyScrollGuard = guard
+  window.addEventListener('scroll', guard, { passive: true })
+  earlyScrollTimer = window.setTimeout(stopEarlyScrollGuard, 600)
+}
 
 onBeforeUnmount(() => {
   if (frame) cancelAnimationFrame(frame)
   window.removeEventListener('resize', onResize)
+  stopEarlyScrollGuard()
   document.documentElement.classList.remove('is-intro', 'is-revealed')
 })
 </script>
