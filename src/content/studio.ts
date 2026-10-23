@@ -48,46 +48,46 @@ export const capabilities: Capability[] = [
 ]
 
 /*
- * 设计：这个站的具体参数。
+ * 设计：这个站长什么样。
  *
- * 只写数字、比例和取值，不写流派定义，也不写「不用什么」。
- * 读者要判断风格，看这些数字就够了。
+ * 用日常说法讲清楚看到的东西，不写实现参数。
+ * 读者要看的是「为什么是这样」，不是「rem 值是多少」。
  */
 export const designNotes: DesignNote[] = [
   {
     index: 'D1',
     title: { zh: '标识', en: 'Mark', ja: 'ロゴ' },
     body: {
-      zh: '大方块占 78.05%，小方块占 60.98%，错位 39.02%。两个正方形叠加，交叠处的白孔由 difference 混合算出，不画白块。',
-      en: 'Large square at 78.05%, small at 60.98%, offset 39.02%. Two overlapping squares; the hole is a difference blend, not a drawn shape.',
-      ja: '大方形 78.05%、小方形 60.98%、ずれ 39.02%。正方形二つの重なりで、交差部の白い穴は difference の合成による。',
+      zh: '两个正方形叠在一起，交叠的地方留一个白孔。白孔不是画上去的，是两块叠加时算出来的。',
+      en: 'Two squares stacked, with a white hole where they overlap. The hole is not drawn; it falls out of the overlap.',
+      ja: '正方形を二つ重ね、重なった部分に白い穴を残す。穴は描いたものではなく、重なりから生まれる。',
     },
   },
   {
     index: 'D2',
-    title: { zh: '栅格', en: 'Grid', ja: 'グリッド' },
+    title: { zh: '版式', en: 'Layout', ja: 'レイアウト' },
     body: {
-      zh: '页边距 clamp(1.25rem, 4.2vw, 5rem)，栏距 clamp(1.25rem, 2.6vw, 2.75rem)。所有区块的左边缘落在同一条线上。',
-      en: 'Page margin clamp(1.25rem, 4.2vw, 5rem), gutter clamp(1.25rem, 2.6vw, 2.75rem). Every section shares one left edge.',
-      ja: '余白 clamp(1.25rem, 4.2vw, 5rem)、段間 clamp(1.25rem, 2.6vw, 2.75rem)。全セクションの左端は同じ線に載る。',
+      zh: '所有区块从左边同一条线开始，行距和留白比字号更用力。区块之间靠空白分开，不画框。',
+      en: 'Every section starts on the same left line, and spacing carries more weight than type size. Sections are separated by blank space, not boxes.',
+      ja: 'どのセクションも左の同じ線から始まる。字の大きさより、行間と余白で差を付ける。区切りは空白で、枠は使わない。',
     },
   },
   {
     index: 'D3',
-    title: { zh: '灰度', en: 'Greys', ja: 'グレー' },
+    title: { zh: '颜色', en: 'Colour', ja: '色' },
     body: {
-      zh: '七个灰阶，从 #f4f4f4 到 #333333。全部由两层黑以 multiply 混合得出，调色盘里没有独立的灰色。',
-      en: 'Seven steps from #f4f4f4 to #333333, all produced by multiply blending two blacks. No grey is picked by hand.',
-      ja: '#f4f4f4 から #333333 までの七段階。すべて二層の黒を multiply で合成した結果で、単独のグレーは使わない。',
+      zh: '只有黑、白和灰。灰是把两层黑叠起来得到的，不是调出来的。没有别的颜色。',
+      en: 'Black, white and grey only. The greys come from stacking two blacks, not from a palette. No other colour.',
+      ja: '黒、白、グレーだけ。グレーは黒を二層重ねて得たもので、色を選んだものではない。ほかの色は使わない。',
     },
   },
   {
     index: 'D4',
-    title: { zh: '字体', en: 'Typefaces', ja: '書体' },
+    title: { zh: '字体', en: 'Type', ja: '書体' },
     body: {
-      zh: '六种自托管字体，共 1.5 MB。按页面实际字符集做子集，首屏只加载其中两种。',
-      en: 'Six self-hosted families, 1.5 MB in total. Each is subset to the characters used, and only two load on the first screen.',
-      ja: '自前配信の六書体、合計 1.5 MB。実際に使う文字だけに絞り込み、最初の画面では二つだけを読み込む。',
+      zh: '中文和英文各有一套，大标题用粗笔画，正文用细笔画。字体文件只保留站内用到的字，打开时只加载其中两套。',
+      en: 'One family for Chinese and one for Latin, heavy strokes for headings and light for body text. Only the characters used on the site are kept, and two families load up front.',
+      ja: '中国語とラテン語で別の書体。見出しは太い画、本文は細い画。サイトで使う文字だけを残し、最初は二つだけを読み込む。',
     },
   },
 ]
