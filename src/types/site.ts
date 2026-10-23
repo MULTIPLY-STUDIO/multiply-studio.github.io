@@ -68,7 +68,6 @@ export interface SiteContent {
   }
   work: {
     title: LocalizedText
-    note: LocalizedText
     filterAll: LocalizedText
     columns: { index: LocalizedText; year: LocalizedText; project: LocalizedText; discipline: LocalizedText }
     empty: LocalizedText

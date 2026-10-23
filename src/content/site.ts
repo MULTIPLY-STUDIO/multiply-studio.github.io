@@ -45,9 +45,9 @@ export const siteContent: SiteContent = {
       ja: ['正片', '叠底'],
     },
     slogan: {
-      zh: '就现在，喧闹起来吧。',
-      en: "Let's make some noise.",
-      ja: '今こそ、騒ごう。',
+      zh: '软件、界面与交互。',
+      en: 'Software, interface, interaction.',
+      ja: 'ソフトウェア、インターフェース、インタラクション。',
     },
     workLabel: { zh: '项目', en: 'Work', ja: 'プロジェクト' },
     workTitle: { zh: '公开的项目', en: 'Public work', ja: '公開中のプロジェクト' },
@@ -59,7 +59,6 @@ export const siteContent: SiteContent = {
 
   work: {
     title: { zh: '项目', en: 'Work', ja: 'プロジェクト' },
-    note: { zh: '按展示顺序排列。', en: 'Listed in display order.', ja: '表示順に並べている。' },
     filterAll: { zh: '全部', en: 'All', ja: 'すべて' },
     columns: {
       index: { zh: '编号', en: 'No.', ja: '番号' },
@@ -68,9 +67,9 @@ export const siteContent: SiteContent = {
       discipline: { zh: '领域', en: 'Discipline', ja: '領域' },
     },
     empty: {
-      zh: '这个方向还没有公开的项目。',
-      en: 'No public project in this area yet.',
-      ja: 'この領域に公開中のプロジェクトはまだない。',
+      zh: '该领域暂无公开项目。',
+      en: 'No public projects in this area.',
+      ja: 'この領域に公開中のプロジェクトはない。',
     },
   },
 
@@ -88,18 +87,18 @@ export const siteContent: SiteContent = {
   studio: {
     title: { zh: '工作室', en: 'Studio', ja: 'スタジオ' },
     lead: {
-      zh: '做软件产品、界面系统与工程实现。',
-      en: 'Builds software products, interface systems and engineering implementation.',
-      ja: 'ソフトウェア製品、インターフェースシステム、実装をつくる。',
+      zh: '软件产品、界面系统与工程实现。',
+      en: 'Software products, interface systems and engineering implementation.',
+      ja: 'ソフトウェア製品、インターフェースシステム、実装。',
     },
     capabilityLabel: { zh: '能力', en: 'Capabilities', ja: '能力' },
     designLabel: { zh: '设计', en: 'Design', ja: 'デザイン' },
     founderLabel: { zh: '主创', en: 'Principal', ja: '主宰' },
     founderName: 'Yos-X',
     founderBody: {
-      zh: '独立做开发与设计。Android 系统功能、Compose 界面、桌面工具与前端都做过。',
-      en: 'Works alone on development and design. Android platform features, Compose interfaces, desktop tools and frontend have all been part of the work.',
-      ja: '開発と設計を一人で行う。Android のプラットフォーム機能、Compose のインターフェース、デスクトップツール、フロントエンドをこれまでに手がけてきた。',
+      zh: '独立开发者与设计师。Android 系统功能、Compose 界面、桌面工具与前端。',
+      en: 'Independent developer and designer. Android platform features, Compose interfaces, desktop tools and frontend.',
+      ja: '独立した開発者兼デザイナー。Android のプラットフォーム機能、Compose のインターフェース、デスクトップツール、フロントエンド。',
     },
   },
 
@@ -115,7 +114,7 @@ export const siteContent: SiteContent = {
 
   notFound: {
     title: '404',
-    body: { zh: '这个地址没有页面。', en: 'No page at this address.', ja: 'このアドレスにページはない。' },
+    body: { zh: '该地址无对应页面。', en: 'No page at this address.', ja: 'このアドレスにページはない。' },
     home: { zh: '返回首页', en: 'Back to home', ja: 'ホームへ戻る' },
     work: { zh: '查看项目', en: 'View work', ja: 'プロジェクトを見る' },
   },

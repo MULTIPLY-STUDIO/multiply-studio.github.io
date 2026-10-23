@@ -47,8 +47,7 @@ useReveal(() => page.value)
   <div ref="page" class="work-view page">
     <header class="work-view__hero">
       <h1 class="work-view__title display-brush">{{ t(content.work.title) }}</h1>
-      <p class="work-view__note serif serif--display">{{ t(content.work.note) }}</p>
-    </header>
+      </header>
 
     <div class="work-view__body">
       <aside class="work-view__filters" :aria-label="t(content.work.title)">
@@ -92,12 +91,6 @@ useReveal(() => page.value)
   line-height: 1;
 }
 
-.work-view__note {
-  margin-top: clamp(1.25rem, 2.5vw, 2rem);
-  max-width: 32ch;
-  margin-left: auto;
-  color: var(--tint-80);
-}
 
 .work-view__body {
   display: grid;
