@@ -9,7 +9,7 @@
 import { ref } from 'vue'
 import { useLocale } from '@/composables/useLocale'
 import { useReveal } from '@/composables/useReveal'
-import { capabilities, processSteps } from '@/content/studio'
+import { capabilities, designNotes } from '@/content/studio'
 import TagList from '@/components/ui/TagList.vue'
 
 const { content, t } = useLocale()
@@ -45,14 +45,14 @@ useReveal(() => page.value)
       </div>
     </section>
 
-    <!-- 流程 -->
+    <!-- 设计 -->
     <section class="studio-view__section studio-view__section--process">
       <div class="block">
-        <h2 class="block__label">{{ t(content.studio.processLabel) }}</h2>
+        <h2 class="block__label">{{ t(content.studio.designLabel) }}</h2>
         <ol class="process-list">
-          <li v-for="step in processSteps" :key="step.index" class="process-step" data-reveal>
-            <h3 class="process-step__title display-brush">{{ t(step.title) }}</h3>
-            <p class="process-step__body prose">{{ t(step.body) }}</p>
+          <li v-for="note in designNotes" :key="note.index" class="process-step" data-reveal>
+            <h3 class="process-step__title display-brush">{{ t(note.title) }}</h3>
+            <p class="process-step__body prose">{{ t(note.body) }}</p>
           </li>
         </ol>
       </div>

@@ -20,7 +20,7 @@ export const projects: Project[] = [
     title: 'Flamingo',
     tagline: { zh: '播放本地曲库，状态同步到系统界面', en: 'Local library playback, state synced to system surfaces', ja: 'ローカルライブラリを再生し、再生状態をシステムの表示に同期する' },
     summary: {
-      zh: 'Android 本地音乐播放器。曲库扫描、队列播放、逐字歌词与锁屏歌词共用同一个 Media3 会话。',
+      zh: 'Android 端本地音乐播放器。曲库扫描、队列播放、逐字歌词与锁屏歌词共用同一个 Media3 会话。',
       en: 'A local music player for Android. Scanning, queue playback, word-synced lyrics and lock-screen lyrics share one Media3 session.',
       ja: 'Android のローカル音楽プレーヤー。スキャン取り込み、キュー再生、歌詞の逐次表示、ロック画面の歌詞が同じ Media3 セッションを共有する。',
     },
@@ -36,7 +36,7 @@ export const projects: Project[] = [
       {
         kind: 'lead',
         body: {
-          zh: 'Android 本地音乐播放器，通知、锁屏、车载与小部件共用同一个媒体会话。',
+          zh: 'Android 端类 Apple Music 风格本地音乐播放器。',
           en: 'An Android local music player whose notification, lock screen, car display and home widget share one Media3 session.',
           ja: 'Android のローカル音楽プレーヤーであり、通知、ロック画面、車載ディスプレイ、ウィジェットが同じメディアセッションを共有する。',
         },
@@ -58,7 +58,7 @@ export const projects: Project[] = [
       {
         kind: 'text',
         body: {
-          zh: '播放状态要同步到通知、锁屏、车载与小部件。媒体扫描、歌单、队列与历史的读写方式不一样，放不进同一个状态里。',
+          zh: '播放状态需要同步到通知、锁屏、车载与小部件。媒体扫描、歌单、队列与历史的读写方式不同，无法共用同一份状态。',
           en: 'Playback state has to reach the notification, lock screen, car display and widget. Media scanning, playlists, the queue and history follow different read/write patterns, so they cannot share one state store.',
           ja: '再生状態は通知、ロック画面、車載ディスプレイ、ウィジェットに同期する必要がある。メディアスキャン、プレイリスト、キュー、履歴は読み書きの方式が異なり、同じ状態管理にまとめられない。',
         },
@@ -70,10 +70,10 @@ export const projects: Project[] = [
       {
         kind: 'list',
         items: [
-          { zh: '两个 ExoPlayer 交叉淡化，只在自然推进队列时生效', en: 'Two ExoPlayer instances crossfade, only on natural queue advance.', ja: '2 つの ExoPlayer をクロスフェードさせ、自然にキューが進む場合だけ適用する。' },
-          { zh: '逐字歌词按时间轴推进，解析与渲染分成两个模块', en: 'Word-synced lyrics advance along a timeline, with parsing and rendering in separate modules.', ja: '歌詞は時間軸に沿って逐次表示し、解析と描画を別モジュールに分ける。' },
-          { zh: '锁屏歌词适配了 ColorOS 与 vivo', en: 'Lock-screen lyrics work on ColorOS and vivo.', ja: 'ロック画面の歌詞は ColorOS と vivo に対応している。' },
-          { zh: 'MSS 人声分离失败时退回 dry PCM', en: 'MSS vocal separation falls back to dry PCM when it fails.', ja: 'MSS のボーカル分離に失敗したときは dry PCM にフォールバックする。' },
+          { zh: '双 ExoPlayer 交叉淡化，仅在队列自然推进时生效', en: 'Two ExoPlayer instances crossfade, only on natural queue advance.', ja: '2 つの ExoPlayer をクロスフェードさせ、自然にキューが進む場合だけ適用する。' },
+          { zh: '逐字歌词按时间轴推进，解析与渲染分离', en: 'Word-synced lyrics advance along a timeline, with parsing and rendering kept apart.', ja: '歌詞は時間軸に沿って逐次表示し、解析と描画を分離する。' },
+          { zh: '锁屏歌词适配 ColorOS 与 vivo', en: 'Lock-screen lyrics work on ColorOS and vivo.', ja: 'ロック画面の歌詞は ColorOS と vivo に対応している。' },
+          { zh: 'MSS 人声分离失败时回退至 dry PCM', en: 'MSS vocal separation falls back to dry PCM when it fails.', ja: 'MSS のボーカル分離に失敗したときは dry PCM にフォールバックする。' },
         ],
       },
     ],
@@ -87,9 +87,9 @@ export const projects: Project[] = [
     year: '2024',
     span: '2023 — 2024',
     title: 'BiliVideoDown',
-    tagline: { zh: 'B 站视频解析与下载', en: 'Bilibili video parsing and download', ja: 'Bilibili 動画の解析とダウンロード' },
+    tagline: { zh: '哔哩哔哩视频解析与下载', en: 'Bilibili video parsing and download', ja: 'Bilibili 動画の解析とダウンロード' },
     summary: {
-      zh: 'Android 的 B 站视频解析与下载工具。弹幕与字幕单独处理，BV 与 AV 在本地换算。',
+      zh: 'Android 端哔哩哔哩视频解析与下载工具。弹幕与字幕单独处理，BV 与 AV 号在本地换算。',
       en: 'An Android tool for parsing and downloading Bilibili video. Danmaku and subtitles are handled separately, and BV and AV convert locally.',
       ja: 'Android 向けの Bilibili 動画の解析とダウンロードツール。弾幕と字幕は個別に処理し、BV と AV はローカルで換算する。',
     },
@@ -105,7 +105,7 @@ export const projects: Project[] = [
       {
         kind: 'lead',
         body: {
-          zh: 'Android 的 B 站视频解析与下载工具，三种输入方式都走同一个解析流程。',
+          zh: 'Android 端哔哩哔哩视频解析与下载工具，解析流程统一。',
           en: 'An Android tool that parses and downloads Bilibili video, with three input routes into one parsing flow.',
           ja: 'Android 向けの Bilibili 動画の解析とダウンロードツールであり、3 つの入力方法が同じ解析フローを通る。',
         },
@@ -127,7 +127,7 @@ export const projects: Project[] = [
       {
         kind: 'text',
         body: {
-          zh: '投稿与番剧的接口、鉴权、分片结构都不一样，但用户只给一个链接。音视频是两条流，下载后还要合成一个 MP4。',
+          zh: '投稿与番剧的接口、鉴权、分片结构不同，输入只有一个链接。音视频分为两条流，下载后需要合成 MP4。',
           en: 'Uploads and bangumi use different endpoints, authorisation and segment layouts, while the user supplies one link. Audio and video arrive as two streams and have to become one MP4.',
           ja: '投稿と番組の API、認証、セグメント構造はそれぞれ異なるが、ユーザーが渡すのは 1 本のリンクだけ。音声と映像は 2 本のストリームで、ダウンロード後に 1 つの MP4 へ合成する必要がある。',
         },
@@ -139,10 +139,10 @@ export const projects: Project[] = [
       {
         kind: 'list',
         items: [
-          { zh: '手动输入、剪贴板与分享都进同一个解析器', en: 'Manual input, the clipboard and share intents all reach one parser.', ja: '手動入力、クリップボード、共有のいずれも同じパーサーに入る。' },
-          { zh: 'WBI 签名在本地计算', en: 'WBI signatures are computed locally.', ja: 'WBI 署名はローカルで計算する。' },
-          { zh: '音视频两条轨由项目内实现的 muxer 合成一个 MP4', en: 'A muxer implemented in the project joins the audio and video tracks into one MP4.', ja: '音声と映像の 2 トラックは、プロジェクト内で実装した muxer が 1 つの MP4 に合成する。' },
-          { zh: 'b23 短链先展开，BV 与 AV 在本地换算', en: 'b23 links are expanded first, and BV and AV convert locally.', ja: 'b23 の短縮リンクを先に展開し、BV と AV はローカルで換算する。' },
+          { zh: '手动输入、剪贴板与分享共用同一个解析器', en: 'Manual input, the clipboard and share intents all reach one parser.', ja: '手動入力、クリップボード、共有のいずれも同じパーサーに入る。' },
+          { zh: 'WBI 签名本地计算', en: 'WBI signatures are computed locally.', ja: 'WBI 署名はローカルで計算する。' },
+          { zh: '自研 muxer 将音视频两条轨合成 MP4', en: 'A muxer implemented in the project joins the audio and video tracks into one MP4.', ja: '音声と映像の 2 トラックは、プロジェクト内で実装した muxer が 1 つの MP4 に合成する。' },
+          { zh: 'b23 短链解析，本地换算 BV 与 AV 号', en: 'b23 links are expanded first, and BV and AV convert locally.', ja: 'b23 の短縮リンクを先に展開し、BV と AV はローカルで換算する。' },
         ],
       },
     ],
@@ -155,7 +155,7 @@ export const projects: Project[] = [
     title: 'ClassCall',
     tagline: { zh: '课堂点名与分组抽取工具', en: 'A desktop tool for classroom roll-call and group draws', ja: '授業の点名とグループ抽選ツール' },
     summary: {
-      zh: 'Compose Desktop 写的课堂抽取工具。单组与多组抽取、分组管理与设置都存在本地 TOML 里。',
+      zh: 'Compose Desktop 编写的课堂抽取工具。单组与多组抽取、分组管理与设置存放于本地 TOML。',
       en: 'A Compose Desktop classroom tool. Single- and multi-group draws, group management and settings live in local TOML.',
       ja: 'Compose Desktop で作った授業用の抽選ツール。1 グループの抽選、複数グループの抽選、グループ管理、設定はローカルの TOML に保存する。',
     },
@@ -171,7 +171,7 @@ export const projects: Project[] = [
       {
         kind: 'lead',
         body: {
-          zh: 'Windows 桌面的点名与分组抽取工具，抽取结果与名单存在同一份本地配置里。',
+          zh: 'Windows 端点名与分组抽取工具。',
           en: 'A Windows desktop tool for classroom roll-call and group draws, keeping results and rosters in one local config.',
           ja: 'Windows デスクトップの点名とグループ抽選ツールであり、抽選結果と名簿は同じローカル設定に保存する。',
         },
@@ -192,7 +192,7 @@ export const projects: Project[] = [
       {
         kind: 'text',
         body: {
-          zh: '名单常来自文本、表格或者聊天记录，格式不统一。一节课可能抽单组也可能抽多组，结果要一直留在屏幕上。',
+          zh: '支持从文本、表格或聊天记录等多种途径导入名单。支持多种抽取方式。',
           en: 'Rosters arrive as text, spreadsheets or chat logs in inconsistent formats. A session may draw one group or several, and the result has to stay on screen.',
           ja: '名簿はテキスト、表計算、チャットログなどの形式で届くことが多く、書式は統一されていない。1 回の授業で 1 グループだけを抽選することも複数グループを抽選することもあり、結果は画面に残したままにする必要がある。',
         },
@@ -204,9 +204,9 @@ export const projects: Project[] = [
       {
         kind: 'list',
         items: [
-          { zh: '设置与分组存在 config/*.toml 里', en: 'Settings and groups live in config/*.toml.', ja: '設定とグループは config/*.toml に保存する。' },
+          { zh: '设置与分组存放于 config/*.toml', en: 'Settings and groups live in config/*.toml.', ja: '設定とグループは config/*.toml に保存する。' },
           { zh: '单组与多组的计数是两个独立的 key', en: 'Single- and multi-group counts are two separate keys.', ja: '1 グループと複数グループのカウントは別々のキーで持つ。' },
-          { zh: '抽取时每 50 ms 轮转一次，停止时确定结果', en: 'Names rotate every 50 ms while drawing and settle when stopped.', ja: '抽選中は 50 ms ごとに切り替え、停止した時点で結果を確定する。' },
+          { zh: '抽取时每 50 ms 轮换一次，停止时确定结果', en: 'Names rotate every 50 ms while drawing and settle when stopped.', ja: '抽選中は 50 ms ごとに切り替え、停止した時点で結果を確定する。' },
           { zh: '两栏的 rotationY 固定为 ±10°', en: 'Both columns keep a fixed rotationY of ±10°.', ja: '2 列の rotationY は±10°で固定する。' },
         ],
       },
@@ -220,7 +220,7 @@ export const projects: Project[] = [
     title: 'Clash You',
     tagline: { zh: '界面重做成 Material You，内核沿用上游', en: 'A Material You interface on the upstream core', ja: 'Material You で作り直したインターフェースと上流のままのコア' },
     summary: {
-      zh: 'Android 客户端分支，界面按 Material You 重做，取色与前台服务适配了新系统。',
+      zh: '基于 Clash for Android 的 Material You 分支。',
       en: 'An Android client branched from Clash for Android, with a Material You interface and foreground service support for newer system versions.',
       ja: 'Android クライアントの派生版であり、インターフェースを Material You で作り直し、配色の抽出とフォアグラウンドサービスを新しいシステムに対応させた。',
     },
@@ -236,7 +236,7 @@ export const projects: Project[] = [
       {
         kind: 'lead',
         body: {
-          zh: 'Clash for Android 的分支，重做了界面层，内核与配置的含义不变。',
+          zh: '基于 Clash for Android 的 Material You 分支。',
           en: 'A branch of Clash for Android that rebuilds the interface layer while core and config semantics stay upstream.',
           ja: 'Clash for Android の分岐で、インターフェース層を作り直し、コアと設定の意味は変えていない。',
         },
@@ -257,7 +257,7 @@ export const projects: Project[] = [
       {
         kind: 'text',
         body: {
-          zh: '上游发完最后一个版本就转入长期维护，界面与权限模型都早于现在的 Android，较新的内核特性不在支持范围内。',
+          zh: '上游已停止更新。界面与权限模型早于当前 Android，较新的内核特性不在支持范围内。',
           en: 'Upstream shipped its final version and moved to long-term maintenance, with an interface and permission model that predate current Android, so newer core features are out of scope.',
           ja: '上流は最後のバージョンを出したあと長期メンテナンスに移り、インターフェースと権限モデルは現在の Android より前の設計のため、新しいコア機能は対象外となる。',
         },
@@ -269,9 +269,9 @@ export const projects: Project[] = [
       {
         kind: 'list',
         items: [
-          { zh: '界面单独拆成一个 design 模块', en: 'The interface is split into its own design module.', ja: 'インターフェースを独立した design モジュールに分離する。' },
-          { zh: '配色取自系统 accent 色', en: 'Colours are taken from the system accent.', ja: '配色はシステムの accent 色から取る。' },
-          { zh: '声明 Android 14 要求的前台服务类型', en: 'The foreground service types required by Android 14 are declared.', ja: 'Android 14 が要求するフォアグラウンドサービスの種類を宣言する。' },
+          { zh: '界面独立为 design 模块', en: 'The interface is split into its own design module.', ja: 'インターフェースを独立した design モジュールに分離する。' },
+          { zh: '配色取自系统 accent', en: 'Colours are taken from the system accent.', ja: '配色はシステムの accent から取る。' },
+          { zh: '声明 Android 14 所需的前台服务类型', en: 'The foreground service types required by Android 14 are declared.', ja: 'Android 14 が要求するフォアグラウンドサービスの種類を宣言する。' },
           { zh: 'foss flavor 按 ABI 分别出包', en: 'The foss flavor ships per-ABI artifacts.', ja: 'foss フレーバーは ABI ごとにパッケージを出力する。' },
         ],
       },

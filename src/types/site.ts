@@ -21,7 +21,7 @@ export interface Capability {
   items: string[]
 }
 
-export interface ProcessStep {
+export interface DesignNote {
   index: string
   title: LocalizedText
   body: LocalizedText
@@ -87,7 +87,7 @@ export interface SiteContent {
     title: LocalizedText
     lead: LocalizedText
     capabilityLabel: LocalizedText
-    processLabel: LocalizedText
+    designLabel: LocalizedText
     founderLabel: LocalizedText
     founderName: string
     founderBody: LocalizedText

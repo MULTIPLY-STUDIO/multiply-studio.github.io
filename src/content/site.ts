@@ -93,7 +93,7 @@ export const siteContent: SiteContent = {
       ja: 'ソフトウェア製品、インターフェースシステム、実装をつくる。',
     },
     capabilityLabel: { zh: '能力', en: 'Capabilities', ja: '能力' },
-    processLabel: { zh: '流程', en: 'Process', ja: 'プロセス' },
+    designLabel: { zh: '设计', en: 'Design', ja: 'デザイン' },
     founderLabel: { zh: '主创', en: 'Principal', ja: '主宰' },
     founderName: 'Yos-X',
     founderBody: {

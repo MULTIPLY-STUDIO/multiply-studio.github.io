@@ -1,4 +1,4 @@
-import type { Capability, ProcessStep, SocialLink } from '@/types/site'
+import type { Capability, DesignNote, SocialLink } from '@/types/site'
 
 /**
  * 工作室页的结构化内容，与首页共用同一批对外口径。
@@ -48,56 +48,46 @@ export const capabilities: Capability[] = [
 ]
 
 /*
- * 流程：每一步都写「具体做了什么、做完能确认什么」，不写格言。
+ * 设计：这个站本身用了什么，怎么用的。
  *
- * 之前五条是「界定／结构／形态／实现／验证」各配一句四字或短句，
- * 句子之间结构一致、信息量接近零，读起来像从方法论模板里抄的。
- * 现在每条给出可核对的动作与判据，标题也从单字改成动宾短语。
+ * 写法上只陈述构成与参数，不解释为什么好看、不写设计理念。
+ * 每条给一个可核对的事实（比例、层数、来源），读者自己去判断。
  */
-export const processSteps: ProcessStep[] = [
+export const designNotes: DesignNote[] = [
   {
-    index: '01',
-    title: { zh: '先写清楚问题', en: 'Write the problem down', ja: '問題を書き出す' },
+    index: 'D1',
+    title: { zh: '构成主义', en: 'Constructivism', ja: '構成主義' },
     body: {
-      zh: '需求写成一句话，这句话需要能够验证。',
-      en: 'The requirement is written as one sentence, and that sentence has to be verifiable.',
-      ja: '要件を一文に書き、その一文は検証できるものでなければならない。',
+      zh: '版面由矩形与直线构成，不用曲线装饰。标识是两个正方形叠加，交叠处的白孔由 difference 混合算出，不绘制白块。',
+      en: 'The layout is built from rectangles and straight lines, with no curved ornament. The mark is two overlapping squares; the white hole at their intersection is computed by a difference blend, not drawn as a white shape.',
+      ja: '版面は矩形と直線で構成し、曲線の装飾を使わない。ロゴは正方形を二つ重ねたもので、重なり部分の白い穴は difference の合成で算出し、白い図形として描かない。',
     },
   },
   {
-    index: '02',
-    title: { zh: '确定数据与状态', en: 'Settle data and state', ja: 'データと状態を決める' },
+    index: 'D2',
+    title: { zh: '瑞士国际主义', en: 'Swiss International Style', ja: 'スイス・インターナショナル' },
     body: {
-      zh: '数据从哪里来、由谁持有、什么时候变化。这三件事定下来之后才能动界面。',
-      en: 'Where the data comes from, who owns it and when it changes. The interface waits until those three are settled.',
-      ja: 'データがどこから来て、誰が持ち、いつ変わるのか。この三つが決まってから UI に着手する。',
+      zh: '严格栅格，左轴对齐，正文与标题共用同一条起始线。分区靠留白与字重，不靠线框与卡片。',
+      en: 'A strict grid with left-axis alignment; body text and headings start on the same line. Sections are separated by whitespace and weight, not by rules or cards.',
+      ja: '厳密なグリッドと左軸の揃えで、本文と見出しは同じ開始線に載る。区切りは余白と字重で付け、罫線やカードでは区切らない。',
     },
   },
   {
-    index: '03',
-    title: { zh: '按栅格排版', en: 'Lay out on the grid', ja: 'グリッドに配置する' },
+    index: 'D3',
+    title: { zh: '三色系统', en: 'Three-colour system', ja: '三色のシステム' },
     body: {
-      zh: '栏宽、字号、图形尺寸都按同一套栅格计算。',
-      en: 'Column widths, type sizes and figure dimensions are calculated from one grid.',
-      ja: '段組み幅、文字サイズ、図形の寸法は同じグリッドから算出する。',
+      zh: '只用黑、白与叠印产生的灰。所有灰色来自正片叠底的计算结果。',
+      en: 'Only black, white and the greys produced by multiply blending. Every grey comes from the calculation, and no hue is introduced.',
+      ja: '黒、白、そして乗算で生じたグレーだけを使う。グレーはすべて計算の結果で、色相は導入しない。',
     },
   },
   {
-    index: '04',
-    title: { zh: '直接写代码', en: 'Write the code', ja: 'コードを書く' },
+    index: 'D4',
+    title: { zh: '字体', en: 'Typefaces', ja: '書体' },
     body: {
-      zh: '界面按结构直接写成代码，不经过设计稿逐屏还原。样式写在一个文件里。',
-      en: 'The interface is written as code against the structure, without transcribing a design file screen by screen. Styles live in one file.',
-      ja: 'インターフェースは構造に沿って直接コードとして書き、設計データを画面ごとに写さない。スタイルは一つのファイルに置く。',
-    },
-  },
-  {
-    index: '05',
-    title: { zh: '交付前跑完检查', en: 'Pass the checks before delivery', ja: '受け渡し前に検査を通す' },
-    body: {
-      zh: '类型检查、构建、真机测试各跑一遍，三项都通过才算完成。',
-      en: 'Type checks, the build and device tests each run once, and the work counts as done when all three pass.',
-      ja: '型検査、ビルド、実機テストをそれぞれ一度通し、三つすべてが通った時点で完成とする。',
+      zh: '五种自托管字体各有分工：中文正文、中文展示字、拉丁字、衬线与等宽。按页面实际用到的字符集做子集，首屏只加载其中两种。',
+      en: 'Five self-hosted families, each with one job: Chinese body, Chinese display, Latin, serif and monospace. Each is subset to the characters the site actually uses, and only two load on the first screen.',
+      ja: '自前で配信する五つの書体を用途別に使い分ける。中国語本文、中国語の表示用、ラテン、セリフ、等幅で、実際に使う文字だけに絞り込み、最初の画面では二つだけを読み込む。',
     },
   },
 ]
