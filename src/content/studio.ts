@@ -48,46 +48,46 @@ export const capabilities: Capability[] = [
 ]
 
 /*
- * 设计：这个站本身用了什么，怎么用的。
+ * 设计：这个站的具体参数。
  *
- * 写法上只陈述构成与参数，不解释为什么好看、不写设计理念。
- * 每条给一个可核对的事实（比例、层数、来源），读者自己去判断。
+ * 只写数字、比例和取值，不写流派定义，也不写「不用什么」。
+ * 读者要判断风格，看这些数字就够了。
  */
 export const designNotes: DesignNote[] = [
   {
     index: 'D1',
-    title: { zh: '构成主义', en: 'Constructivism', ja: '構成主義' },
+    title: { zh: '标识', en: 'Mark', ja: 'ロゴ' },
     body: {
-      zh: '矩形与直线，不用曲线。标识为两个正方形叠加，交叠处由 difference 混合算出白孔。',
-      en: 'Rectangles and straight lines, no curves. The mark is two overlapping squares; the hole is a difference blend.',
-      ja: '矩形と直線で、曲線は使わない。ロゴは正方形二つの重なりで、交差部は difference の合成による白い穴。',
+      zh: '大方块占 78.05%，小方块占 60.98%，错位 39.02%。两个正方形叠加，交叠处的白孔由 difference 混合算出，不画白块。',
+      en: 'Large square at 78.05%, small at 60.98%, offset 39.02%. Two overlapping squares; the hole is a difference blend, not a drawn shape.',
+      ja: '大方形 78.05%、小方形 60.98%、ずれ 39.02%。正方形二つの重なりで、交差部の白い穴は difference の合成による。',
     },
   },
   {
     index: 'D2',
-    title: { zh: '瑞士国际主义', en: 'Swiss International Style', ja: 'スイス・インターナショナル' },
+    title: { zh: '栅格', en: 'Grid', ja: 'グリッド' },
     body: {
-      zh: '严格栅格，左轴对齐。分区靠留白与字重，不用线框与卡片。',
-      en: 'Strict grid, left-axis alignment. Sections divided by whitespace and weight, not rules or cards.',
-      ja: '厳密なグリッドと左軸の揃え。区切りは余白と字重で付け、罫線とカードは使わない。',
+      zh: '页边距 clamp(1.25rem, 4.2vw, 5rem)，栏距 clamp(1.25rem, 2.6vw, 2.75rem)。所有区块的左边缘落在同一条线上。',
+      en: 'Page margin clamp(1.25rem, 4.2vw, 5rem), gutter clamp(1.25rem, 2.6vw, 2.75rem). Every section shares one left edge.',
+      ja: '余白 clamp(1.25rem, 4.2vw, 5rem)、段間 clamp(1.25rem, 2.6vw, 2.75rem)。全セクションの左端は同じ線に載る。',
     },
   },
   {
     index: 'D3',
-    title: { zh: '三色系统', en: 'Three-colour system', ja: '三色のシステム' },
+    title: { zh: '灰度', en: 'Greys', ja: 'グレー' },
     body: {
-      zh: '黑、白与叠印产生的灰。灰色来自正片叠底的计算，不引入色相。',
-      en: 'Black, white and greys from multiply blending. Greys are computed, no hue is introduced.',
-      ja: '黒、白、乗算で生じたグレー。グレーは計算によるもので、色相は導入しない。',
+      zh: '七个灰阶，从 #f4f4f4 到 #333333。全部由两层黑以 multiply 混合得出，调色盘里没有独立的灰色。',
+      en: 'Seven steps from #f4f4f4 to #333333, all produced by multiply blending two blacks. No grey is picked by hand.',
+      ja: '#f4f4f4 から #333333 までの七段階。すべて二層の黒を multiply で合成した結果で、単独のグレーは使わない。',
     },
   },
   {
     index: 'D4',
     title: { zh: '字体', en: 'Typefaces', ja: '書体' },
     body: {
-      zh: '五种自托管字体：中文正文、中文展示字、拉丁字、衬线与等宽。按实际字符集做子集，首屏加载其中两种。',
-      en: 'Five self-hosted families: Chinese body, Chinese display, Latin, serif, monospace. Subset to the characters used; two load on the first screen.',
-      ja: '自前配信の五書体で、中国語本文、中国語表示用、ラテン、セリフ、等幅。実際の文字に絞り込み、最初の画面では二つを読み込む。',
+      zh: '六种自托管字体，共 1.5 MB。按页面实际字符集做子集，首屏只加载其中两种。',
+      en: 'Six self-hosted families, 1.5 MB in total. Each is subset to the characters used, and only two load on the first screen.',
+      ja: '自前配信の六書体、合計 1.5 MB。実際に使う文字だけに絞り込み、最初の画面では二つだけを読み込む。',
     },
   },
 ]
