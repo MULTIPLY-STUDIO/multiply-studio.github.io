@@ -11,11 +11,7 @@ const { content, t } = useLocale()
 
 <template>
   <section id="studio" class="home-studio home-block">
-    <SectionHead
-      :label="content.home.studioLabel"
-      :title="content.home.studioTitle"
-      :note="content.home.studioBody"
-    />
+    <SectionHead :label="content.home.studioLabel" :title="content.home.studioTitle" />
 
     <div class="home-studio__body">
       <ul class="home-studio__caps" data-reveal>

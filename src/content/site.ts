@@ -51,25 +51,10 @@ export const siteContent: SiteContent = {
     },
     workLabel: { zh: '项目', en: 'Work', ja: 'プロジェクト' },
     workTitle: { zh: '公开的项目', en: 'Public work', ja: '公開中のプロジェクト' },
-    workNote: {
-      zh: '每个项目标了平台、年份与当前状态。',
-      en: 'Each project lists its platform, year and current status.',
-      ja: '各プロジェクトにはプラットフォーム、年、現在の状態を記載している。',
-    },
     studioLabel: { zh: '工作室', en: 'Studio', ja: 'スタジオ' },
     studioTitle: { zh: '设计与实现', en: 'Design and implementation', ja: 'デザインと実装' },
-    studioBody: {
-      zh: '能力按技术栈划分，每条列出使用到的工具。',
-      en: 'Capabilities are grouped by stack, each listing the tools it uses.',
-      ja: '能力は技術スタックごとに分け、使うツールをそれぞれ示す。',
-    },
     contactLabel: { zh: '联系', en: 'Contact', ja: 'コンタクト' },
     contactTitle: { zh: '联系', en: 'Contact', ja: 'コンタクト' },
-    contactNote: {
-      zh: '电子邮件',
-      en: 'Email',
-      ja: 'メール',
-    },
   },
 
   work: {
@@ -120,7 +105,6 @@ export const siteContent: SiteContent = {
 
   contact: {
     title: { zh: '联系', en: 'Contact', ja: 'コンタクト' },
-    lead: { zh: '邮件地址在下面。', en: 'The address is below.', ja: 'アドレスは下にある。' },
     email: 'multiply-studio@outlook.com',
     socialsLabel: { zh: '其他渠道', en: 'Elsewhere', ja: 'その他の窓口' },
   },

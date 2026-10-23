@@ -15,7 +15,6 @@ const { copied, copy } = useClipboard()
   <section id="contact" class="home-contact home-block">
     <p class="home-contact__label">{{ t(content.home.contactLabel) }}</p>
 
-    <p class="home-contact__note prose" data-reveal>{{ t(content.home.contactNote) }}</p>
 
     <a :href="`mailto:${content.contact.email}`" class="home-contact__mail" data-reveal>
       <span class="home-contact__mail-text">{{ content.contact.email }}</span>
@@ -81,11 +80,6 @@ const { copied, copy } = useClipboard()
   max-width: 16ch;
 }
 
-.home-contact__note {
-  margin-top: 1.25rem;
-  max-width: 34rem;
-  color: var(--tint-65);
-}
 
 /* 巨型邮箱：整行可点，下方一条实线，hover 时由左向右反白。 */
 .home-contact__mail {

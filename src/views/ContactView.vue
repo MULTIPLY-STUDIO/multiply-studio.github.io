@@ -23,7 +23,6 @@ useReveal(() => page.value)
   <div ref="page" class="contact-view page">
     <header class="contact-view__hero">
       <h1 class="contact-view__title display-brush">{{ t(content.contact.title) }}</h1>
-      <p class="contact-view__lead serif serif--display">{{ t(content.contact.lead) }}</p>
     </header>
 
     <div class="contact-view__body">
@@ -91,12 +90,6 @@ useReveal(() => page.value)
   line-height: 1;
 }
 
-.contact-view__lead {
-  margin-top: clamp(1.25rem, 2.5vw, 2rem);
-  max-width: 34ch;
-  margin-left: auto;
-  color: var(--tint-80);
-}
 
 .contact-view__body {
   display: grid;

@@ -19,11 +19,7 @@ const selected = computed(() => projects.slice(0, 4))
 
 <template>
   <section id="work" class="home-work home-block">
-    <SectionHead
-      :label="content.home.workLabel"
-      :title="content.home.workTitle"
-      :note="content.home.workNote"
-    />
+    <SectionHead :label="content.home.workLabel" :title="content.home.workTitle" />
 
     <div class="home-work__list" data-reveal>
       <ProjectRow

@@ -61,13 +61,10 @@ export interface SiteContent {
      */
     workLabel: LocalizedText
     workTitle: LocalizedText
-    workNote: LocalizedText
     studioLabel: LocalizedText
     studioTitle: LocalizedText
-    studioBody: LocalizedText
     contactLabel: LocalizedText
     contactTitle: LocalizedText
-    contactNote: LocalizedText
   }
   work: {
     title: LocalizedText
@@ -97,7 +94,6 @@ export interface SiteContent {
   }
   contact: {
     title: LocalizedText
-    lead: LocalizedText
     email: string
     socialsLabel: LocalizedText
   }
