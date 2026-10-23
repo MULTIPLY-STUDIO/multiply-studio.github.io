@@ -50,7 +50,7 @@ export const siteContent: SiteContent = {
       ja: '今こそ、騒ごう。',
     },
     workLabel: { zh: '项目', en: 'Work', ja: 'プロジェクト' },
-    workTitle: { zh: '公开的项目', en: 'Public work', ja: '公開中のプロジェクト' },
+    workTitle: { zh: '公开项目', en: 'Public work', ja: '公開プロジェクト' },
     studioLabel: { zh: '工作室', en: 'Studio', ja: 'スタジオ' },
     studioTitle: { zh: '设计与实现', en: 'Design and implementation', ja: 'デザインと実装' },
     contactLabel: { zh: '联系', en: 'Contact', ja: 'コンタクト' },
