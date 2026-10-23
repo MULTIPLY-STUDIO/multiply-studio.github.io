@@ -35,7 +35,6 @@ export const siteContent: SiteContent = {
   },
 
   home: {
-    eyebrow: { zh: '独立数字工作室', en: 'Independent digital studio', ja: '独立デジタルスタジオ' },
     /**
      * 封面标题的两行文字。逐语言给出，而不是在组件里按 locale 分支：
      * 组件只负责排版，不负责决定标题写什么。
@@ -108,7 +107,6 @@ export const siteContent: SiteContent = {
       en: 'Software products, interface systems and engineering implementation.',
       ja: 'ソフトウェア製品、インターフェースシステム、実装。',
     },
-    principlesLabel: { zh: '原则', en: 'Principles', ja: '原則' },
     capabilityLabel: { zh: '能力', en: 'Capabilities', ja: '能力' },
     processLabel: { zh: '流程', en: 'Process', ja: '工程' },
     founderLabel: { zh: '主创', en: 'Principal', ja: '主宰' },
@@ -116,7 +114,7 @@ export const siteContent: SiteContent = {
     founderBody: {
       zh: '独立开发者和设计师，做过 Android 系统能力、Compose 界面、桌面工具和前端。',
       en: 'An independent developer and designer who has worked on Android platform integration, Compose interfaces, desktop tools and frontend.',
-      ja: '独立した開発者でありデザイナー。Android のプラットフォーム機能、Compose のインターフェース、デスクトップツール、フロントエンドを手がけてきた。',
+      ja: '独立した開発者でありデザイナーで、Android のプラットフォーム機能、Compose のインターフェース、デスクトップツール、フロントエンドを手がけてきた。',
     },
   },
 
