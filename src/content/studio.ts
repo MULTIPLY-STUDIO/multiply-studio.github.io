@@ -50,7 +50,7 @@ export const capabilities: Capability[] = [
 /*
  * 设计：这个站用了什么。
  *
- * 一条一句，只陈述，不解释原理，不用比喻，不写「不是……是……」。
+ * 写具体的名字，不写「一套字体」「某种版式」这类概括。
  */
 export const designNotes: DesignNote[] = [
   {
@@ -66,27 +66,27 @@ export const designNotes: DesignNote[] = [
     index: 'D2',
     title: { zh: '版式', en: 'Layout', ja: 'レイアウト' },
     body: {
-      zh: '单轴左对齐，区块之间只用留白分隔。',
-      en: 'Single left axis, sections separated by whitespace only.',
-      ja: '左軸を一本に揃え、区切りは余白のみで付ける。',
+      zh: '使用栅格、单轴左对齐与留白分隔。',
+      en: 'Grid, single left axis and whitespace separation.',
+      ja: 'グリッド、左軸の揃え、余白による区切りを使用する。',
     },
   },
   {
     index: 'D3',
     title: { zh: '颜色', en: 'Colour', ja: '色' },
     body: {
-      zh: '黑白灰三色，灰色由叠印产生。',
-      en: 'Black, white and grey, with greys produced by multiply blending.',
-      ja: '黒、白、グレーの三色で、グレーは乗算から生じる。',
+      zh: '使用黑色、白色与叠印产生的灰色。',
+      en: 'Black, white and the greys produced by multiply blending.',
+      ja: '黒、白、乗算から生じるグレーを使用する。',
     },
   },
   {
     index: 'D4',
     title: { zh: '字体', en: 'Type', ja: '書体' },
     body: {
-      zh: '中文与拉丁文各一套字体，只保留站内用到的字。',
-      en: 'One family each for Chinese and Latin, subset to the glyphs used here.',
-      ja: '中国語とラテン語で各一書体、サイトで使う文字のみを収録する。',
+      zh: '使用思源黑体、思源宋体与狸叶黑体等。',
+      en: 'Source Han Sans, Source Han Serif and Leeeaf Hei, among others.',
+      ja: '思源黑体、思源宋体、狸葉黒体などを使用する。',
     },
   },
 ]
