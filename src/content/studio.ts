@@ -48,46 +48,45 @@ export const capabilities: Capability[] = [
 ]
 
 /*
- * 设计：这个站长什么样。
+ * 设计：这个站用了什么。
  *
- * 用日常说法讲清楚看到的东西，不写实现参数。
- * 读者要看的是「为什么是这样」，不是「rem 值是多少」。
+ * 一条一句，只陈述，不解释原理，不用比喻，不写「不是……是……」。
  */
 export const designNotes: DesignNote[] = [
   {
     index: 'D1',
     title: { zh: '标识', en: 'Mark', ja: 'ロゴ' },
     body: {
-      zh: '两个正方形叠在一起，交叠的地方留一个白孔。白孔不是画上去的，是两块叠加时算出来的。',
-      en: 'Two squares stacked, with a white hole where they overlap. The hole is not drawn; it falls out of the overlap.',
-      ja: '正方形を二つ重ね、重なった部分に白い穴を残す。穴は描いたものではなく、重なりから生まれる。',
+      zh: '两个正方形叠加，交叠处留白。',
+      en: 'Two overlapping squares, with the intersection left empty.',
+      ja: '正方形二つの重なりで、重なった部分は白く抜く。',
     },
   },
   {
     index: 'D2',
     title: { zh: '版式', en: 'Layout', ja: 'レイアウト' },
     body: {
-      zh: '所有区块从左边同一条线开始，行距和留白比字号更用力。区块之间靠空白分开，不画框。',
-      en: 'Every section starts on the same left line, and spacing carries more weight than type size. Sections are separated by blank space, not boxes.',
-      ja: 'どのセクションも左の同じ線から始まる。字の大きさより、行間と余白で差を付ける。区切りは空白で、枠は使わない。',
+      zh: '单轴左对齐，区块之间只用留白分隔。',
+      en: 'Single left axis, sections separated by whitespace only.',
+      ja: '左軸を一本に揃え、区切りは余白のみで付ける。',
     },
   },
   {
     index: 'D3',
     title: { zh: '颜色', en: 'Colour', ja: '色' },
     body: {
-      zh: '只有黑、白和灰。灰是把两层黑叠起来得到的，不是调出来的。没有别的颜色。',
-      en: 'Black, white and grey only. The greys come from stacking two blacks, not from a palette. No other colour.',
-      ja: '黒、白、グレーだけ。グレーは黒を二層重ねて得たもので、色を選んだものではない。ほかの色は使わない。',
+      zh: '黑白灰三色，灰色由叠印产生。',
+      en: 'Black, white and grey, with greys produced by multiply blending.',
+      ja: '黒、白、グレーの三色で、グレーは乗算から生じる。',
     },
   },
   {
     index: 'D4',
     title: { zh: '字体', en: 'Type', ja: '書体' },
     body: {
-      zh: '中文和英文各有一套，大标题用粗笔画，正文用细笔画。字体文件只保留站内用到的字，打开时只加载其中两套。',
-      en: 'One family for Chinese and one for Latin, heavy strokes for headings and light for body text. Only the characters used on the site are kept, and two families load up front.',
-      ja: '中国語とラテン語で別の書体。見出しは太い画、本文は細い画。サイトで使う文字だけを残し、最初は二つだけを読み込む。',
+      zh: '中文与拉丁文各一套字体，只保留站内用到的字。',
+      en: 'One family each for Chinese and Latin, subset to the glyphs used here.',
+      ja: '中国語とラテン語で各一書体、サイトで使う文字のみを収録する。',
     },
   },
 ]
