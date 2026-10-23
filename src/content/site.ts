@@ -50,18 +50,18 @@ export const siteContent: SiteContent = {
       ja: '今こそ、騒ごう。',
     },
     workLabel: { zh: '项目', en: 'Work', ja: 'プロジェクト' },
-    workTitle: { zh: '正在运行的项目', en: 'Projects in use', ja: '稼働中のプロジェクト' },
+    workTitle: { zh: '公开的项目', en: 'Public work', ja: '公開中のプロジェクト' },
     workNote: {
-      zh: '持续维护中。',
-      en: 'Actively maintained.',
-      ja: '継続して保守中。',
+      zh: '每个项目标了平台、年份与当前状态。',
+      en: 'Each project lists its platform, year and current status.',
+      ja: '各プロジェクトにはプラットフォーム、年、現在の状態を記載している。',
     },
     studioLabel: { zh: '工作室', en: 'Studio', ja: 'スタジオ' },
     studioTitle: { zh: '设计与实现', en: 'Design and implementation', ja: 'デザインと実装' },
     studioBody: {
-      zh: 'MULTIPLY 能力。',
-      en: 'MULTIPLY capabilities.',
-      ja: 'MULTIPLY の能力。',
+      zh: '能力按技术栈划分，每条列出使用到的工具。',
+      en: 'Capabilities are grouped by stack, each listing the tools it uses.',
+      ja: '能力は技術スタックごとに分け、使うツールをそれぞれ示す。',
     },
     contactLabel: { zh: '联系', en: 'Contact', ja: 'コンタクト' },
     contactTitle: { zh: '联系', en: 'Contact', ja: 'コンタクト' },
@@ -74,7 +74,7 @@ export const siteContent: SiteContent = {
 
   work: {
     title: { zh: '项目', en: 'Work', ja: 'プロジェクト' },
-    note: { zh: '按重要程度排列。', en: 'Ordered by importance.', ja: '重要度の順に並べている。' },
+    note: { zh: '按展示顺序排列。', en: 'Listed in display order.', ja: '表示順に並べている。' },
     filterAll: { zh: '全部', en: 'All', ja: 'すべて' },
     columns: {
       index: { zh: '编号', en: 'No.', ja: '番号' },
@@ -103,24 +103,24 @@ export const siteContent: SiteContent = {
   studio: {
     title: { zh: '工作室', en: 'Studio', ja: 'スタジオ' },
     lead: {
-      zh: '软件产品、界面系统和工程实现。',
-      en: 'Software products, interface systems and engineering implementation.',
-      ja: 'ソフトウェア製品、インターフェースシステム、実装。',
+      zh: '做软件产品、界面系统与工程实现。',
+      en: 'Builds software products, interface systems and engineering implementation.',
+      ja: 'ソフトウェア製品、インターフェースシステム、実装をつくる。',
     },
     capabilityLabel: { zh: '能力', en: 'Capabilities', ja: '能力' },
-    processLabel: { zh: '流程', en: 'Process', ja: '工程' },
+    processLabel: { zh: '流程', en: 'Process', ja: 'プロセス' },
     founderLabel: { zh: '主创', en: 'Principal', ja: '主宰' },
     founderName: 'Yos-X',
     founderBody: {
-      zh: '独立开发者和设计师，做过 Android 系统能力、Compose 界面、桌面工具和前端。',
-      en: 'An independent developer and designer who has worked on Android platform integration, Compose interfaces, desktop tools and frontend.',
-      ja: '独立した開発者でありデザイナーで、Android のプラットフォーム機能、Compose のインターフェース、デスクトップツール、フロントエンドを手がけてきた。',
+      zh: '独立做开发与设计。Android 系统功能、Compose 界面、桌面工具与前端都做过。',
+      en: 'Works alone on development and design. Android platform features, Compose interfaces, desktop tools and frontend have all been part of the work.',
+      ja: '開発と設計を一人で行う。Android のプラットフォーム機能、Compose のインターフェース、デスクトップツール、フロントエンドをこれまでに手がけてきた。',
     },
   },
 
   contact: {
     title: { zh: '联系', en: 'Contact', ja: 'コンタクト' },
-    lead: { zh: '有事情直接发邮件。', en: 'Send an email.', ja: '用件はメールで。' },
+    lead: { zh: '邮件地址在下面。', en: 'The address is below.', ja: 'アドレスは下にある。' },
     email: 'multiply-studio@outlook.com',
     socialsLabel: { zh: '其他渠道', en: 'Elsewhere', ja: 'その他の窓口' },
   },
