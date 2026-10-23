@@ -45,9 +45,9 @@ export const siteContent: SiteContent = {
       ja: ['正片', '叠底'],
     },
     slogan: {
-      zh: '软件、界面与交互。',
-      en: 'Software, interface, interaction.',
-      ja: 'ソフトウェア、インターフェース、インタラクション。',
+      zh: '就现在，喧闹起来吧。',
+      en: "Let's make some noise.",
+      ja: '今こそ、騒ごう。',
     },
     workLabel: { zh: '项目', en: 'Work', ja: 'プロジェクト' },
     workTitle: { zh: '公开的项目', en: 'Public work', ja: '公開中のプロジェクト' },
